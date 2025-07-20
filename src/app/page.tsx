@@ -8,7 +8,6 @@ const mockUrls = [
   "https://5jg4mxr6uu.ufs.sh/f/069k1fb8afrP79HeX8Cpf3PDwIJNLr6SayOBKkv1UpTFioeG",
   "https://5jg4mxr6uu.ufs.sh/f/069k1fb8afrPu1OdsslPXE89WMCLAhoFrKzkdtHbe1lvmYsU",
 ];
-
 const mockImages = mockUrls.map((url, index) => ({
   id: index + 1,
   url,
