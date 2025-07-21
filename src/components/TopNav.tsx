@@ -8,7 +8,10 @@ export default function TopNav() {
     <nav className="flex w-full items-center justify-between border-b p-4 text-xl font-semibold">
       <div>Fragrance</div>
       {loggedin ? (
-        <div className="just flex gap-10">profile</div>
+        <div className="just flex gap-10">
+          profile
+          <></>
+        </div>
       ) : (
         <p>sign up</p>
       )}
