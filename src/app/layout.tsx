@@ -1,3 +1,5 @@
+import "@/styles/globals.css";
+import { Geist } from "next/font/google";
 import type React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -45,10 +47,15 @@ export default function RootLayout({
                     className="w-64 pl-10"
                   />
                 </div>
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src="/placeholder-user.jpg" />
-                  <AvatarFallback>AZ</AvatarFallback>
-                </Avatar>
+                <Button variant="ghost" className="text-sm">
+                  Anthony Zheng
+                </Button>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="/placeholder-user.jpg" />
+                    <AvatarFallback>AZ</AvatarFallback>
+                  </Avatar>
+                </Button>
               </div>
             </div>
           </div>
