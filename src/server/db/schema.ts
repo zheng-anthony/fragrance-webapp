@@ -12,8 +12,8 @@ import { index, pgTableCreator } from "drizzle-orm/pg-core";
  */
 export const createTable = pgTableCreator((name) => `fragrance-webapp_${name}`);
 
-export const images = createTable(
-  "image",
+export const fragrances = createTable(
+  "fragrance",
   (d) => ({
     id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
     name: d.varchar({ length: 256 }).notNull(),

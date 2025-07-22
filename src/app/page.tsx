@@ -1,8 +1,6 @@
-"use client";
 import Link from "next/link";
 import { db } from "../server/db";
 export const dynamic = "force-dynamic";
-import { useState } from "react";
 import {
   Star,
   Heart,
@@ -18,10 +16,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
+import CologneCard from "~/components/cologne-card/cologne-card";
 
 export default async function Homepage() {
-  const images = await db.query.images.findMany();
+  const fragrances = await db.query.fragrances.findMany();
 
   return (
     <div className="bg-background min-h-screen">
@@ -100,28 +98,9 @@ export default async function Homepage() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                  {[...images].map((image) => (
-                    <div key={image.id} className="w-48">
-                      <img src={image.url} />
-                    </div>
+                  {fragrances.map((f, index) => (
+                    <CologneCard key={index} cologne={f} />
                   ))}
-                  {/* {[...images, ...images, ...images].map((images) => (
-                    <Card
-                      key={images.id}
-                      className="cursor-pointer transition-shadow hover:shadow-md"
-                    >
-                      <CardContent className="p-3">
-                        <div className="relative mb-2 aspect-[3/4]">
-                          <Image
-                            src={images.url || "/placeholder.svg"}
-                            alt={images.name}
-                            className="rounded-md object-cover"
-                          />
-                        </div>
-                        <div className="flex items-center justify-between"></div>
-                      </CardContent>
-                    </Card>
-                  ))} */}
                 </div>
               </CardContent>
             </Card>

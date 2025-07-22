@@ -5,6 +5,13 @@
 import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
-const config = {};
 
-export default config;
+// next.config.js (ESM syntax)
+const nextConfig = {
+  reactStrictMode: true,
+  images: {
+    remotePatterns: [new URL("https://5jg4mxr6uu.ufs.sh/f/**")],
+  },
+};
+
+export default nextConfig;
