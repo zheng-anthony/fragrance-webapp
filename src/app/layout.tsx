@@ -8,6 +8,9 @@ import { Search } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { HomeButton } from "./client";
+import { BrowseButton } from "./client";
+import { CollectionsButton } from "./client";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,12 +34,9 @@ export default function RootLayout({
               <div className="flex items-center gap-6">
                 <h1 className="text-primary text-2xl font-bold">ScentList</h1>
                 <nav className="hidden items-center gap-6 md:flex">
-                  <Button variant="ghost" className="text-sm">
-                    Browse
-                  </Button>
-                  <Button variant="ghost" className="text-sm">
-                    Collections
-                  </Button>
+                  <HomeButton />
+                  <BrowseButton />
+                  <CollectionsButton />
                 </nav>
               </div>
               <div className="flex items-center gap-4">
