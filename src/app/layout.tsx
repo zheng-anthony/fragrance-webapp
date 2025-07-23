@@ -8,9 +8,12 @@ import { Search } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { HomeButton } from "./client";
-import { BrowseButton } from "./client";
-import { CollectionsButton } from "./client";
+import {
+  HomeButton,
+  BrowseButton,
+  CollectionsButton,
+  ProfileButton,
+} from "@/components/topnav/topnav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -47,15 +50,7 @@ export default function RootLayout({
                     className="w-64 pl-10"
                   />
                 </div>
-                <Button variant="ghost" className="text-sm">
-                  Anthony Zheng
-                </Button>
-                <Button variant="ghost" size="icon" className="rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src="/placeholder-user.jpg" />
-                    <AvatarFallback>AZ</AvatarFallback>
-                  </Avatar>
-                </Button>
+                <ProfileButton />
               </div>
             </div>
           </div>

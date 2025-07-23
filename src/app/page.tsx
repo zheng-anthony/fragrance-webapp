@@ -12,11 +12,15 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import CologneCard from "~/components/cologne-card/cologne-card";
+import {
+  Addcollection,
+  Viewowned,
+  Viewtried,
+  Viewwishlist,
+} from "~/components/quick-actions/quick-actions";
 
 export default async function Homepage() {
   const fragrances = await db.query.fragrances.findMany();
@@ -54,34 +58,10 @@ export default async function Homepage() {
                 <CardTitle className="text-lg">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <Button
-                  className="w-full justify-start bg-transparent"
-                  variant="outline"
-                >
-                  <Bookmark className="mr-2 h-4 w-4" />
-                  View Owned
-                </Button>
-                <Button
-                  className="w-full justify-start bg-transparent"
-                  variant="outline"
-                >
-                  <Bookmark className="mr-2 h-4 w-4" />
-                  View Tried
-                </Button>
-                <Button
-                  className="w-full justify-start bg-transparent"
-                  variant="outline"
-                >
-                  <Bookmark className="mr-2 h-4 w-4" />
-                  View Wishlist
-                </Button>
-                <Button
-                  className="w-full justify-start bg-transparent"
-                  variant="outline"
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add to Collection
-                </Button>
+                <Viewowned />
+                <Viewtried />
+                <Viewwishlist />
+                <Addcollection />
               </CardContent>
             </Card>
           </div>
