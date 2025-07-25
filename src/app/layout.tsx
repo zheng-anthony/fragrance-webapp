@@ -50,6 +50,7 @@ export default function RootLayout({
                     className="w-64 pl-10"
                   />
                 </div>
+                {}
                 <ProfileButton />
               </div>
             </div>
