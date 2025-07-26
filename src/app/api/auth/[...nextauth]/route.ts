@@ -1,7 +1,8 @@
-import NextAuth, { type NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { type NextAuthOptions } from "next-auth";
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
@@ -11,7 +12,6 @@ const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-// Type the result to avoid unsafe assignment error
-const handler = NextAuth(authOptions) as ReturnType<typeof NextAuth>;
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
