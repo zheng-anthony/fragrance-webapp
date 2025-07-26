@@ -11,6 +11,7 @@ const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-const handler = NextAuth(authOptions);
+// Type the result to avoid unsafe assignment error
+const handler = NextAuth(authOptions) as ReturnType<typeof NextAuth>;
 
 export { handler as GET, handler as POST };
