@@ -10,8 +10,10 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
 };
 
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST };
+export const GET = NextAuth(authOptions);
+export const POST = NextAuth(authOptions);
