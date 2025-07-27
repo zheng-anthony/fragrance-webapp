@@ -3,6 +3,7 @@
 
 import { sql } from "drizzle-orm";
 import { index, pgTableCreator } from "drizzle-orm/pg-core";
+import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -26,3 +27,24 @@ export const fragrances = createTable(
   }),
   (t) => [index("name_idx").on(t.name)],
 );
+export const usersTable = pgTable("users", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull().unique(),
+});
+export const wishlistTable = pgTable("wishlist", {
+  id: serial("id").primaryKey(),
+  fragrance_name: text("fragrance_name").notNull(),
+  notes: text("notes").notNull(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => usersTable.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .$onUpdate(() => new Date()),
+});
+export type InsertUser = typeof usersTable.$inferInsert;
+export type SelectUser = typeof usersTable.$inferSelect;
+export type InsertPost = typeof wishlistTable.$inferInsert;
+export type SelectPost = typeof wishlistTable.$inferSelect;
