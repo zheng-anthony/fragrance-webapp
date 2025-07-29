@@ -57,18 +57,7 @@ export function ProfileButton() {
     return (
       <>
         <Button variant="ghost" className="text-sm" onClick={handleProfile}>
-          Anthony Zheng
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="rounded-full"
-          onClick={handleProfile}
-        >
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="/placeholder-user.jpg" />
-            <AvatarFallback>AZ</AvatarFallback>
-          </Avatar>
+          {session?.user.name}
         </Button>
         <Button variant="ghost" className="text-sm" onClick={() => signOut()}>
           Sign Out
