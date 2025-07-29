@@ -27,13 +27,14 @@ export const fragrances = createTable(
   }),
   (t) => [index("name_idx").on(t.name)],
 );
-export const usersTable = pgTable("usersTable", {
+export const usersTable = pgTable("users", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
 });
-export const wishlistTable = pgTable("wishlistTable", {
+export const userlistsTable = pgTable("userLists", {
   id: serial("id").primaryKey(),
+  type: text("type").notNull(),
   fragrance_name: text("fragrance_name").notNull(),
   notes: text("notes").notNull(),
   userId: integer("user_id")
@@ -44,42 +45,32 @@ export const wishlistTable = pgTable("wishlistTable", {
     .notNull()
     .$onUpdate(() => new Date()),
 });
-export const triedTable = pgTable("triedTable", {
-  id: serial("id").primaryKey(),
-  fragrance_name: text("fragrance_name").notNull(),
-  notes: text("notes").notNull(),
-  userId: integer("user_id")
-    .notNull()
-    .references(() => usersTable.id, { onDelete: "cascade" }),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at")
-    .notNull()
-    .$onUpdate(() => new Date()),
-});
-export const ownedTable = pgTable("ownedTable", {
-  id: serial("id").primaryKey(),
-  fragrance_name: text("fragrance_name").notNull(),
-  notes: text("notes").notNull(),
-  userId: integer("user_id")
-    .notNull()
-    .references(() => usersTable.id, { onDelete: "cascade" }),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at")
-    .notNull()
-    .$onUpdate(() => new Date()),
-});
-export const collectionsTable = pgTable("collectionsTable", {
+export const collectionsTable = pgTable("collection", {
   id: serial("id").primaryKey(),
   collections_name: text("collection_name").notNull(),
   userId: integer("user_id")
     .notNull()
     .references(() => usersTable.id, { onDelete: "cascade" }),
 });
+
+export const collectionItemsTable = pgTable("collectionItems", {
+  id: serial("id").primaryKey(),
+  collection_id: integer("collection_id")
+    .notNull()
+    .references(() => collectionsTable.id, { onDelete: "cascade" }),
+  fragrance_id: integer("fragrance_id")
+    .notNull()
+    .references(() => fragrances.id, { onDelete: "cascade" }),
+});
+
 export type InsertUser = typeof usersTable.$inferInsert;
 export type SelectUser = typeof usersTable.$inferSelect;
-export type InsertList = typeof wishlistTable.$inferInsert;
-export type SelectList = typeof wishlistTable.$inferSelect;
-export type InsertTried = typeof triedTable.$inferInsert;
-export type SelectTried = typeof triedTable.$inferSelect;
-export type InsertOwned = typeof ownedTable.$inferInsert;
-export type SelectOwned = typeof ownedTable.$inferSelect;
+
+export type InsertList = typeof userlistsTable.$inferInsert;
+export type SelectList = typeof userlistsTable.$inferSelect;
+
+export type InsertCollection = typeof collectionsTable.$inferInsert;
+export type SelectCollection = typeof collectionsTable.$inferSelect;
+
+export type InsertCollectionItem = typeof collectionItemsTable.$inferInsert;
+export type SelectCollectionItem = typeof collectionItemsTable.$inferSelect;
