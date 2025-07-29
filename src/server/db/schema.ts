@@ -44,7 +44,35 @@ export const wishlistTable = pgTable("wishlist", {
     .notNull()
     .$onUpdate(() => new Date()),
 });
+export const triedTable = pgTable("tried", {
+  id: serial("id").primaryKey(),
+  fragrance_name: text("fragrance_name").notNull(),
+  notes: text("notes").notNull(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => usersTable.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .$onUpdate(() => new Date()),
+});
+export const ownedTable = pgTable("owned", {
+  id: serial("id").primaryKey(),
+  fragrance_name: text("fragrance_name").notNull(),
+  notes: text("notes").notNull(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => usersTable.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .$onUpdate(() => new Date()),
+});
 export type InsertUser = typeof usersTable.$inferInsert;
 export type SelectUser = typeof usersTable.$inferSelect;
-export type InsertPost = typeof wishlistTable.$inferInsert;
-export type SelectPost = typeof wishlistTable.$inferSelect;
+export type InsertList = typeof wishlistTable.$inferInsert;
+export type SelectList = typeof wishlistTable.$inferSelect;
+export type InsertTried = typeof triedTable.$inferInsert;
+export type SelectTried = typeof triedTable.$inferSelect;
+export type InsertOwned = typeof ownedTable.$inferInsert;
+export type SelectOwned = typeof ownedTable.$inferSelect;
