@@ -3,7 +3,7 @@ import { Check, Eye, Heart } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 export default function CologneCard({
   cologne,
@@ -17,7 +17,12 @@ export default function CologneCard({
   };
 }) {
   const { data: session } = useSession();
+
   const handleAdd = async (type: "wishlist" | "owned" | "tried") => {
+    if (!session?.user.id) {
+      signIn();
+      return;
+    }
     await fetch("/api/userlists/update", {
       method: "POST",
       headers: { "Content-type": "application/json" },
