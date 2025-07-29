@@ -27,12 +27,12 @@ export const fragrances = createTable(
   }),
   (t) => [index("name_idx").on(t.name)],
 );
-export const usersTable = pgTable("users", {
+export const usersTable = pgTable("usersTable", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
 });
-export const wishlistTable = pgTable("wishlist", {
+export const wishlistTable = pgTable("wishlistTable", {
   id: serial("id").primaryKey(),
   fragrance_name: text("fragrance_name").notNull(),
   notes: text("notes").notNull(),
@@ -44,7 +44,7 @@ export const wishlistTable = pgTable("wishlist", {
     .notNull()
     .$onUpdate(() => new Date()),
 });
-export const triedTable = pgTable("tried", {
+export const triedTable = pgTable("triedTable", {
   id: serial("id").primaryKey(),
   fragrance_name: text("fragrance_name").notNull(),
   notes: text("notes").notNull(),
@@ -56,7 +56,7 @@ export const triedTable = pgTable("tried", {
     .notNull()
     .$onUpdate(() => new Date()),
 });
-export const ownedTable = pgTable("owned", {
+export const ownedTable = pgTable("ownedTable", {
   id: serial("id").primaryKey(),
   fragrance_name: text("fragrance_name").notNull(),
   notes: text("notes").notNull(),
@@ -67,6 +67,13 @@ export const ownedTable = pgTable("owned", {
   updatedAt: timestamp("updated_at")
     .notNull()
     .$onUpdate(() => new Date()),
+});
+export const collectionsTable = pgTable("collectionsTable", {
+  id: serial("id").primaryKey(),
+  collections_name: text("collection_name").notNull(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => usersTable.id, { onDelete: "cascade" }),
 });
 export type InsertUser = typeof usersTable.$inferInsert;
 export type SelectUser = typeof usersTable.$inferSelect;
