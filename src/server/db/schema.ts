@@ -35,6 +35,7 @@ export const usersTable = pgTable("users", {
 export const userlistsTable = pgTable("userLists", {
   id: serial("id").primaryKey(),
   type: text("type").notNull(),
+  fragranceId: integer("fragranceId").notNull(),
   fragrance_name: text("fragrance_name").notNull(),
   notes: text("notes").notNull(),
   userId: integer("user_id")

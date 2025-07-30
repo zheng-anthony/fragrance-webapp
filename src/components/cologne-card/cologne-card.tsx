@@ -6,9 +6,9 @@ import Image from "next/image";
 import { signIn, useSession } from "next-auth/react";
 
 export default function CologneCard({
-  cologne,
+  fragrance,
 }: {
-  cologne: {
+  fragrance: {
     id: number;
     url: string;
     name: string;
@@ -28,7 +28,7 @@ export default function CologneCard({
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
         userId: session?.user.id,
-        fragranceId: cologne.id,
+        fragranceId: fragrance.id,
         type,
         notes: "none",
       }),
@@ -37,13 +37,13 @@ export default function CologneCard({
 
   return (
     <Card
-      key={cologne.id}
+      key={fragrance.id}
       className="cursor-pointer transition-shadow hover:shadow-md"
     >
       <div className="relative aspect-[3/4]">
         <Image
-          src={cologne.url}
-          alt={cologne.name}
+          src={fragrance.url}
+          alt={fragrance.name}
           fill
           className="rounded-md object-cover"
         />
@@ -51,8 +51,8 @@ export default function CologneCard({
 
       {/* Info content */}
       <CardContent className="p-3">
-        <h3 className="text-sm font-semibold">{cologne.name}</h3>
-        <p className="text-muted-foreground text-xs">{cologne.name}</p>
+        <h3 className="text-sm font-semibold">{fragrance.name}</h3>
+        <p className="text-muted-foreground text-xs">{fragrance.name}</p>
         <div className="mt-1 flex gap-1">
           <Button
             size="sm"

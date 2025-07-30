@@ -78,8 +78,8 @@ export default async function Homepage() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                  {fragrances.map((fragrance) => (
-                    <CologneCard key={fragrance.id} cologne={fragrance} />
+                  {fragrances.map((f) => (
+                    <CologneCard key={f.id} fragrance={f} />
                   ))}
                 </div>
               </CardContent>
