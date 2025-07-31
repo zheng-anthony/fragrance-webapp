@@ -5,7 +5,14 @@ import { and, eq } from "drizzle-orm";
 type Userlists = typeof userlistsTable.$inferSelect;
 
 export async function POST(req: Request) {
-  const { userId, type, fragranceId, notes } = await req.json();
+  const body: {
+    userId: number;
+    fragranceId: number;
+    type: string;
+    notes?: string;
+  } = await req.json();
+
+  const { userId, type, fragranceId, notes } = body;
 
   const existing: Userlists | undefined =
     await db.query.userlistsTable.findFirst({

@@ -38,7 +38,7 @@ export const userlistsTable = pgTable(
     id: serial("id").primaryKey(),
     type: text("type").notNull(),
     fragranceId: integer("fragranceId").notNull(),
-    notes: text("notes").notNull(),
+    notes: text("notes"),
     userId: integer("user_id")
       .notNull()
       .references(() => usersTable.id, { onDelete: "cascade" }),
