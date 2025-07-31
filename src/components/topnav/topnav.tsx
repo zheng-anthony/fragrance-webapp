@@ -1,6 +1,5 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
 

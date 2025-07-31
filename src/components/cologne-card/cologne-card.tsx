@@ -20,7 +20,7 @@ export default function CologneCard({
 
   const handleAdd = async (type: "wishlist" | "owned" | "tried") => {
     if (!session?.user.id) {
-      signIn();
+      await signIn();
       return;
     }
     await fetch("/api/userlists/update", {

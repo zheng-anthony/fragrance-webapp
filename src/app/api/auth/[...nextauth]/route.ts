@@ -28,7 +28,7 @@ const authOptions: NextAuthOptions = {
       return true;
     },
     //attaches db id
-    async session({ session, token }): Promise<DefaultSession> {
+    async session({ session }): Promise<DefaultSession> {
       if (session.user?.email) {
         const user = await db.query.usersTable.findFirst({
           where: eq(usersTable.email, session.user.email),

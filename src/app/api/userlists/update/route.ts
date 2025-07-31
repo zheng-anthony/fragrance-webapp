@@ -5,12 +5,12 @@ import { and, eq } from "drizzle-orm";
 type Userlists = typeof userlistsTable.$inferSelect;
 
 export async function POST(req: Request) {
-  const body: {
+  const body = (await req.json()) as {
     userId: number;
     fragranceId: number;
     type: string;
-    notes?: string;
-  } = await req.json();
+    notes: string;
+  };
 
   const { userId, type, fragranceId, notes } = body;
 
