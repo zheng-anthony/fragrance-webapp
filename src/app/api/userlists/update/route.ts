@@ -2,17 +2,41 @@ import { NextResponse } from "next/server";
 import { db } from "@/server/db";
 import { userlistsTable } from "~/server/db/schema";
 import { and, eq } from "drizzle-orm";
-type userlists = typeof userlistsTable.$inferSelect;
+type Userlists = typeof userlistsTable.$inferSelect;
 
 export async function POST(req: Request) {
   const { userId, type, fragranceId, notes } = await req.json();
 
-  const existing: userlists | undefined = await db.query.userlistsTable.findFirst({
-    where: (userlist, { eq, and }) =>
-      and(eq(userlist.id, userId), eq(userlist.fragranceId, fragranceId)),
-
-  })
-    if (existing type bool) {
-
-    };
+  const existing: Userlists | undefined =
+    await db.query.userlistsTable.findFirst({
+      where: (userlist, { eq, and }) =>
+        and(
+          eq(userlist.userId, userId),
+          eq(userlist.fragranceId, fragranceId),
+          eq(userlist.type, type),
+        ),
+    });
+  if (existing) {
+    await db
+      .update(userlistsTable)
+      .set({
+        type,
+        notes,
+        updatedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(userlistsTable.userId, userId),
+          eq(userlistsTable.fragranceId, fragranceId),
+          eq(userlistsTable.type, type),
+        ),
+      );
+  } else {
+    await db.insert(userlistsTable).values({
+      userId,
+      fragranceId,
+      type,
+      notes,
+    });
+  }
 }

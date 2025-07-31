@@ -31,6 +31,7 @@ export default function CologneCard({
         fragranceId: fragrance.id,
         type,
         notes: "none",
+        fragrance_name: fragrance.name,
       }),
     });
   };

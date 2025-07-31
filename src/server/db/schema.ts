@@ -2,7 +2,7 @@
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 import { sql } from "drizzle-orm";
-import { index, pgTableCreator } from "drizzle-orm/pg-core";
+import { index, pgTableCreator, unique } from "drizzle-orm/pg-core";
 import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 /**
@@ -32,20 +32,32 @@ export const usersTable = pgTable("users", {
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
 });
-export const userlistsTable = pgTable("userLists", {
-  id: serial("id").primaryKey(),
-  type: text("type").notNull(),
-  fragranceId: integer("fragranceId").notNull(),
-  fragrance_name: text("fragrance_name").notNull(),
-  notes: text("notes").notNull(),
-  userId: integer("user_id")
-    .notNull()
-    .references(() => usersTable.id, { onDelete: "cascade" }),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at")
-    .notNull()
-    .$onUpdate(() => new Date()),
-});
+export const userlistsTable = pgTable(
+  "userLists",
+  {
+    id: serial("id").primaryKey(),
+    type: text("type").notNull(),
+    fragranceId: integer("fragranceId").notNull(),
+    notes: text("notes").notNull(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => usersTable.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at")
+      .notNull()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => ({
+    uniqueConstraints: [
+      unique("user_fragrance_type_unique").on(
+        table.userId,
+        table.fragranceId,
+        table.type,
+      ),
+    ],
+  }),
+);
+
 export const collectionsTable = pgTable("collection", {
   id: serial("id").primaryKey(),
   collections_name: text("collection_name").notNull(),
