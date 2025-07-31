@@ -1,19 +1,7 @@
-import Link from "next/link";
 import { db } from "../server/db";
 export const dynamic = "force-dynamic";
-import {
-  Star,
-  Heart,
-  MessageCircle,
-  TrendingUp,
-  Users,
-  Bookmark,
-  Plus,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import CologneCard from "~/components/cologne-card/cologne-card";
 import {
   Addcollection,

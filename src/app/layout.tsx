@@ -1,14 +1,10 @@
 import "@/styles/globals.css";
-import { Geist } from "next/font/google";
 import type React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import { Search } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SessionProvider } from "next-auth/react";
 
 import {
   HomeButton,
