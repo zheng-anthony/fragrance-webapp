@@ -12,7 +12,7 @@ export function Viewowned() {
   const handleOwned = async () => {
     if (!session?.user.id) {
       if (!session?.user.id) {
-        signIn();
+        await signIn();
         return;
       }
     }
@@ -36,7 +36,7 @@ export function Viewtried() {
   const { data: session } = useSession();
   const handleTried = async () => {
     if (!session?.user.id) {
-      signIn();
+      await signIn();
       return;
     }
     tried.push("/tried");
@@ -60,7 +60,7 @@ export function Viewwishlist() {
 
   const handleWishlist = () => {
     if (!session?.user.id) {
-      signIn();
+      await signIn();
       return;
     }
     wishlist.push("wishlist");
