@@ -58,7 +58,7 @@ export function Viewwishlist() {
 
   const { data: session } = useSession();
 
-  const handleWishlist = () => {
+  const handleWishlist = async () => {
     if (!session?.user.id) {
       await signIn();
       return;
