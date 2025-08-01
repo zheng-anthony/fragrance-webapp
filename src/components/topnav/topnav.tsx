@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { Router } from "lucide-react";
 
 export function HomeButton() {
   const home = useRouter();
@@ -44,6 +45,19 @@ export function CollectionsButton() {
     </Button>
   );
 }
+function SignOutButton() {
+  const signout = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut({ redirect: false });
+    signout.push("/");
+  };
+  return (
+    <Button variant="ghost" className="text-sm" onClick={handleSignOut}>
+      Sign Out
+    </Button>
+  );
+}
 
 export function ProfileButton() {
   const profile = useRouter();
@@ -58,9 +72,7 @@ export function ProfileButton() {
         <Button variant="ghost" className="text-sm" onClick={handleProfile}>
           {session?.user.name}
         </Button>
-        <Button variant="ghost" className="text-sm" onClick={() => signOut()}>
-          Sign Out
-        </Button>
+        <SignOutButton />
       </>
     );
   }
