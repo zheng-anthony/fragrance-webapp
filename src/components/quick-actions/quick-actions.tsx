@@ -5,14 +5,16 @@ import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 
 export function Viewowned() {
-  const { data: session } = useSession();
-
   const owned = useRouter();
+
+  const { data: session } = useSession();
 
   const handleOwned = async () => {
     if (!session?.user.id) {
-      await signIn();
-      return;
+      if (!session?.user.id) {
+        signIn();
+        return;
+      }
     }
     owned.push("/owned");
   };
@@ -31,10 +33,10 @@ export function Viewowned() {
 export function Viewtried() {
   const tried = useRouter();
 
+  const { data: session } = useSession();
   const handleTried = async () => {
-    const { data: session } = useSession();
     if (!session?.user.id) {
-      await signIn();
+      signIn();
       return;
     }
     tried.push("/tried");
@@ -54,8 +56,9 @@ export function Viewtried() {
 export function Viewwishlist() {
   const wishlist = useRouter();
 
-  const handleWishlist = async () => {
-    const { data: session } = useSession();
+  const { data: session } = useSession();
+
+  const handleWishlist = () => {
     if (!session?.user.id) {
       signIn();
       return;
