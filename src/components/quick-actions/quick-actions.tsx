@@ -2,11 +2,18 @@
 import { Button } from "@/components/ui/button";
 import { Bookmark, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
 
 export function Viewowned() {
+  const { data: session } = useSession();
+
   const owned = useRouter();
 
-  const handleOwned = () => {
+  const handleOwned = async () => {
+    if (!session?.user.id) {
+      await signIn();
+      return;
+    }
     owned.push("/owned");
   };
   return (
@@ -24,7 +31,12 @@ export function Viewowned() {
 export function Viewtried() {
   const tried = useRouter();
 
-  const handleTried = () => {
+  const handleTried = async () => {
+    const { data: session } = useSession();
+    if (!session?.user.id) {
+      await signIn();
+      return;
+    }
     tried.push("/tried");
   };
   return (
@@ -42,7 +54,12 @@ export function Viewtried() {
 export function Viewwishlist() {
   const wishlist = useRouter();
 
-  const handleWishlist = () => {
+  const handleWishlist = async () => {
+    const { data: session } = useSession();
+    if (!session?.user.id) {
+      signIn();
+      return;
+    }
     wishlist.push("wishlist");
   };
 
