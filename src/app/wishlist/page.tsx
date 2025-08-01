@@ -1,4 +1,4 @@
-import { Star, Search, Heart, ShoppingCart, Plus } from "lucide-react";
+import { Star, Search, ShoppingCart, Plus, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,12 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function WishlistPage() {
   const wishlistFragrances = [
@@ -221,33 +227,51 @@ export default function WishlistPage() {
 
                   {fragrance.notes && (
                     <div className="bg-muted mt-3 rounded-md p-2">
-                      <p className="text-sm italic">{fragrance.notes}</p>
+                      <p className="text-sm italic">"{fragrance.notes}"</p>
                     </div>
                   )}
 
-                  <div className="mt-4 flex gap-2">
-                    <Button size="sm" className="flex-1">
-                      <ShoppingCart className="mr-1 h-4 w-4" />
-                      Buy Now
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="flex-1 bg-transparent"
-                    >
-                      <Plus className="mr-1 h-4 w-4" />
-                      Mark Tried
-                    </Button>
+                  <div className="mt-4 space-y-2">
+                    <div className="flex gap-2">
+                      <Button size="sm" className="flex-1">
+                        <ShoppingCart className="mr-1 h-4 w-4" />
+                        Buy Now
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="flex-1 bg-transparent"
+                      >
+                        <Plus className="mr-1 h-4 w-4" />
+                        Mark Tried
+                      </Button>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="bg-transparent px-2"
+                          >
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem className="text-green-600">
+                            Mark as Owned
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="text-blue-600">
+                            Mark as Tried
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="text-orange-600">
+                            Change Priority
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="text-red-600">
+                            Remove from Wishlist
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </div>
-
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="w-full text-red-600 hover:bg-red-50 hover:text-red-700"
-                  >
-                    <Heart className="mr-1 h-4 w-4" />
-                    Remove from Wishlist
-                  </Button>
                 </div>
               </CardContent>
             </Card>

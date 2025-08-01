@@ -1,4 +1,4 @@
-import { Star, Search, Grid } from "lucide-react";
+import { Star, Search, Grid, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Image from "next/image";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function OwnedPage() {
   const ownedFragrances = [
@@ -223,7 +229,7 @@ export default function OwnedPage() {
 
                   {fragrance.notes && (
                     <div className="bg-muted mt-3 rounded-md p-2">
-                      <p className="text-sm italic">{fragrance.notes}</p>
+                      <p className="text-sm italic">"{fragrance.notes}"</p>
                     </div>
                   )}
 
@@ -242,6 +248,28 @@ export default function OwnedPage() {
                     >
                       Review
                     </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="bg-transparent px-2"
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem className="text-blue-600">
+                          Move to Wishlist
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-green-600">
+                          Mark as Tried Again
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600">
+                          Remove from Collection
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </div>
               </CardContent>

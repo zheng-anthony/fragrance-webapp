@@ -1,4 +1,11 @@
-import { Star, Search, Plus, ShoppingCart, MessageCircle } from "lucide-react";
+import {
+  Star,
+  Search,
+  Plus,
+  ShoppingCart,
+  MessageCircle,
+  MoreHorizontal,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,6 +18,12 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function TriedPage() {
   const triedFragrances = [
@@ -236,7 +249,7 @@ export default function TriedPage() {
 
                   {fragrance.notes && (
                     <div className="bg-muted mt-3 rounded-md p-2">
-                      <p className="text-sm italic">{fragrance.notes}</p>
+                      <p className="text-sm italic">"{fragrance.notes}"</p>
                     </div>
                   )}
 
@@ -256,6 +269,31 @@ export default function TriedPage() {
                           <Plus className="mr-1 h-4 w-4" />
                           Add to Wishlist
                         </Button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="bg-transparent px-2"
+                            >
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem className="text-green-600">
+                              Mark as Owned
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="text-blue-600">
+                              Add to Wishlist
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="text-orange-600">
+                              Change Verdict
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="text-red-600">
+                              Remove from Tried
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
                     ) : (
                       <div className="flex gap-2">
@@ -274,6 +312,31 @@ export default function TriedPage() {
                         >
                           Edit Notes
                         </Button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="bg-transparent px-2"
+                            >
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem className="text-green-600">
+                              Mark as Owned
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="text-blue-600">
+                              Add to Wishlist
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="text-orange-600">
+                              Change Verdict
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="text-red-600">
+                              Remove from Tried
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
                     )}
                   </div>
