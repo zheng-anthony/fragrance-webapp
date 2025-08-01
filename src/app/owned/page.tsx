@@ -223,7 +223,7 @@ export default function OwnedPage() {
 
                   {fragrance.notes && (
                     <div className="bg-muted mt-3 rounded-md p-2">
-                      <p className="text-sm italic">"{fragrance.notes}"</p>
+                      <p className="text-sm italic">{fragrance.notes}</p>
                     </div>
                   )}
 
