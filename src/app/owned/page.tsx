@@ -18,9 +18,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { db } from "@/server/db";
 import { eq } from "drizzle-orm";
-import { userLists } from "~/server/db/schema";
-import { fragrances } from "~/server/db/schema";
-import CologneCard from "~/components/cologne-card/cologne-card";
+import { userLists } from "@/server/db/schema";
+import { fragrances } from "@/server/db/schema";
 
 export default async function OwnedPage() {
   const owned = await db
@@ -28,7 +27,6 @@ export default async function OwnedPage() {
     .from(userLists)
     .innerJoin(fragrances, eq(userLists.fragranceId, fragrances.id))
     .where(eq(userLists.type, "owned"));
-
   return (
     <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 py-6">
