@@ -13,7 +13,7 @@ import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
  */
 export const createTable = pgTableCreator((name) => `fragrance-webapp_${name}`);
 
-export const fragrancesTable = pgTable(
+export const fragrances = pgTable(
   "fragrances",
   {
     id: serial("id").primaryKey(),
@@ -37,7 +37,7 @@ export const usersTable = pgTable("users", {
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
 });
-export const userlistsTable = pgTable(
+export const userLists = pgTable(
   "userLists",
   {
     id: serial("id").primaryKey(),
@@ -78,14 +78,14 @@ export const collectionItemsTable = pgTable("collectionItems", {
     .references(() => collectionsTable.id, { onDelete: "cascade" }),
   fragrance_id: integer("fragrance_id")
     .notNull()
-    .references(() => fragrancesTable.id, { onDelete: "cascade" }),
+    .references(() => fragrances.id, { onDelete: "cascade" }),
 });
 
 export type InsertUser = typeof usersTable.$inferInsert;
 export type SelectUser = typeof usersTable.$inferSelect;
 
-export type InsertList = typeof userlistsTable.$inferInsert;
-export type SelectList = typeof userlistsTable.$inferSelect;
+export type InsertList = typeof userLists.$inferInsert;
+export type SelectList = typeof userLists.$inferSelect;
 
 export type InsertCollection = typeof collectionsTable.$inferInsert;
 export type SelectCollection = typeof collectionsTable.$inferSelect;

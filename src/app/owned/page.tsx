@@ -18,13 +18,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { db } from "@/server/db";
 import { eq } from "drizzle-orm";
-import { userlistsTable } from "~/server/db/schema";
-import CologneCard from "~/components/cologne-card/cologne-card";
+import { userLists } from "~/server/db/schema";
+import { fragrances } from "~/server/db/schema";
 
 export default async function OwnedPage() {
-  const owned = await db.query.userlistsTable.findMany({
-    where: eq(userlistsTable.type, "owned"),
-  });
+  const owned = await db
+    .select()
+    .from(userLists)
+    .innerJoin(fragrances, eq(userLists.fragranceId, fragrances.id))
+    .where(eq(userLists.type, "owned"));
 
   return (
     <div className="bg-background min-h-screen">
@@ -95,7 +97,66 @@ export default async function OwnedPage() {
         {/* Collection Grid */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {owned.map((f) => (
-            <CologneCard key={f.id} fragrance={f} />
+            <Card
+              key={f.userLists.id}
+              className="cursor-pointer transition-shadow hover:shadow-lg"
+            >
+              <CardContent className="p-4">
+                <div className="space-y-2">
+                  <h3 className="text-lg font-semibold">{f.fragrances.name}</h3>
+
+                  <div className="space-y-1 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Added:</span>
+                      <span>
+                        Added:{" "}
+                        {new Date(
+                          f.fragrances.createdAt,
+                        ).toLocaleDateString()}{" "}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="mt-4 flex gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1 bg-transparent"
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1 bg-transparent"
+                    >
+                      Review
+                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="bg-transparent px-2"
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem className="text-blue-600">
+                          Move to Wishlist
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-green-600">
+                          Mark as Tried Again
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600">
+                          Remove from Collection
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>

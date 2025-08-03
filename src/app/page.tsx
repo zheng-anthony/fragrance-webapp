@@ -11,7 +11,7 @@ import {
 } from "~/components/quick-actions/quick-actions";
 
 export default async function Homepage() {
-  const fragrances = await db.query.fragrancesTable.findMany();
+  const fragrances = await db.query.fragrances.findMany();
 
   return (
     <div className="bg-background min-h-screen">
