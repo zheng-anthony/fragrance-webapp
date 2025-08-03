@@ -1,4 +1,4 @@
-import { Star, Search, Grid, MoreHorizontal } from "lucide-react";
+import { Search, Grid, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,6 +20,8 @@ import { db } from "@/server/db";
 import { eq } from "drizzle-orm";
 import { userLists } from "@/server/db/schema";
 import { fragrances } from "@/server/db/schema";
+
+export const dynamic = "force-dynamic";
 
 export default async function OwnedPage() {
   const owned = await db

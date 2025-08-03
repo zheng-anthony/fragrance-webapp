@@ -2,7 +2,6 @@
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { Router } from "lucide-react";
 
 export function HomeButton() {
   const home = useRouter();
