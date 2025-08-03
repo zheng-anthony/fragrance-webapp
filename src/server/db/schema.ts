@@ -2,7 +2,7 @@
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 import { sql } from "drizzle-orm";
-import { index, pgTableCreator, unique } from "drizzle-orm/pg-core";
+import { index, pgTableCreator, unique, varchar } from "drizzle-orm/pg-core";
 import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 /**
@@ -13,19 +13,24 @@ import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
  */
 export const createTable = pgTableCreator((name) => `fragrance-webapp_${name}`);
 
-export const fragrances = createTable(
-  "fragrance",
-  (d) => ({
-    id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
-    name: d.varchar({ length: 256 }).notNull(),
-    url: d.varchar({ length: 1024 }).notNull(),
-    createdAt: d
-      .timestamp({ withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+export const fragrancesTable = pgTable(
+  "fragrances",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }).notNull(),
+    url: varchar("url", { length: 1024 }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
       .notNull(),
-    updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
-  }),
-  (t) => [index("name_idx").on(t.name)],
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+      () => new Date(),
+    ),
+  },
+  (table) => {
+    return {
+      nameIdx: index("name_idx").on(table.name),
+    };
+  },
 );
 export const usersTable = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -73,7 +78,7 @@ export const collectionItemsTable = pgTable("collectionItems", {
     .references(() => collectionsTable.id, { onDelete: "cascade" }),
   fragrance_id: integer("fragrance_id")
     .notNull()
-    .references(() => fragrances.id, { onDelete: "cascade" }),
+    .references(() => fragrancesTable.id, { onDelete: "cascade" }),
 });
 
 export type InsertUser = typeof usersTable.$inferInsert;
