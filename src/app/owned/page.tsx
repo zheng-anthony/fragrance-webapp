@@ -20,6 +20,7 @@ import { db } from "@/server/db";
 import { eq } from "drizzle-orm";
 import { userLists } from "~/server/db/schema";
 import { fragrances } from "~/server/db/schema";
+import CologneCard from "~/components/cologne-card/cologne-card";
 
 export default async function OwnedPage() {
   const owned = await db
@@ -33,7 +34,7 @@ export default async function OwnedPage() {
       <div className="container mx-auto px-4 py-6">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="mb-2 text-3xl font-bold">My Collection</h1>
+          <h1 className="mb-2 text-3xl font-bold">Owned Fragrances</h1>
           <p className="text-muted-foreground">
             {owned.length} fragrances owned
           </p>
@@ -101,6 +102,14 @@ export default async function OwnedPage() {
               key={f.userLists.id}
               className="cursor-pointer transition-shadow hover:shadow-lg"
             >
+              <div className="relative aspect-[3/4]">
+                <Image
+                  src={f.fragrances.url}
+                  alt={f.fragrances.name}
+                  fill
+                  className="rounded-md object-cover"
+                />
+              </div>
               <CardContent className="p-4">
                 <div className="space-y-2">
                   <h3 className="text-lg font-semibold">{f.fragrances.name}</h3>
