@@ -24,75 +24,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { db } from "@/server/db";
+import { eq } from "drizzle-orm";
+import { fragrances } from "@/server/db/schema";
+import { userLists } from "@/server/db/schema";
 
-export default function TriedPage() {
-  const triedFragrances = [
-    {
-      name: "Acqua di Gio",
-      brand: "Giorgio Armani",
-      rating: 4.2,
-      userRating: 3,
-      image: "/placeholder.svg?height=200&width=150",
-      dateTried: "2024-01-12",
-      price: "$85",
-      notes: "Fresh and clean, good for summer but not unique enough for me",
-      category: "Designer",
-      verdict: "Pass",
-      location: "Sephora Store",
-    },
-    {
-      name: "Terre d'Hermès",
-      brand: "Hermès",
-      rating: 4.3,
-      userRating: 4,
-      image: "/placeholder.svg?height=200&width=150",
-      dateTried: "2024-01-08",
-      price: "$110",
-      notes: "Sophisticated and earthy. Really impressed with the longevity",
-      category: "Designer",
-      verdict: "Want to Buy",
-      location: "Department Store",
-    },
-    {
-      name: "Jazz Club",
-      brand: "Maison Margiela",
-      rating: 4.1,
-      userRating: 5,
-      image: "/placeholder.svg?height=200&width=150",
-      dateTried: "2024-01-05",
-      price: "$140",
-      notes: "Amazing cozy scent! Perfect for fall and winter evenings",
-      category: "Niche",
-      verdict: "Must Buy",
-      location: "Online Sample",
-    },
-    {
-      name: "Paco Rabanne 1 Million",
-      brand: "Paco Rabanne",
-      rating: 4.0,
-      userRating: 2,
-      image: "/placeholder.svg?height=200&width=150",
-      dateTried: "2024-01-03",
-      price: "$75",
-      notes: "Too sweet and cloying for my taste. Very synthetic smell",
-      category: "Designer",
-      verdict: "Pass",
-      location: "Friend's Collection",
-    },
-    {
-      name: "Oud Wood",
-      brand: "Tom Ford",
-      rating: 4.5,
-      userRating: 4,
-      image: "/placeholder.svg?height=200&width=150",
-      dateTried: "2023-12-28",
-      price: "$280",
-      notes: "Luxurious and smooth. Expensive but worth considering",
-      category: "Niche",
-      verdict: "Maybe",
-      location: "Nordstrom",
-    },
-  ];
+export const dynamic = "force-dynamic";
+
+export default async function TriedPage() {
+  const tried = await db
+    .select()
+    .from(userLists)
+    .innerJoin(fragrances, eq(userLists.fragranceId, fragrances.id))
+    .where(eq(userLists.type, "tried"));
 
   const getVerdictColor = (verdict: string) => {
     switch (verdict) {
@@ -116,7 +60,7 @@ export default function TriedPage() {
         <div className="mb-6">
           <h1 className="mb-2 text-3xl font-bold">Tried Fragrances</h1>
           <p className="text-muted-foreground">
-            {triedFragrances.length} fragrances tested
+            {tried.length} fragrances tested
           </p>
         </div>
 
@@ -176,85 +120,32 @@ export default function TriedPage() {
 
         {/* Tried Fragrances Grid */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {triedFragrances.map((fragrance, index) => (
+          {tried.map((f) => (
             <Card
-              key={index}
+              key={f.fragrances.id}
               className="cursor-pointer transition-shadow hover:shadow-lg"
             >
               <CardContent className="p-4">
                 <div className="relative mb-4 aspect-[3/4]">
                   <Image
-                    src={fragrance.image || "/placeholder.svg"}
-                    alt={fragrance.name}
+                    src={f.fragrances.url || "/placeholder.svg"}
+                    alt={f.fragrances.name}
                     fill
                     className="rounded-md object-cover"
                   />
-                  <Badge
-                    className={`absolute top-2 right-2 ${getVerdictColor(fragrance.verdict)}`}
-                  >
-                    {fragrance.verdict}
-                  </Badge>
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="text-lg font-semibold">{fragrance.name}</h3>
-                  <p className="text-muted-foreground">{fragrance.brand}</p>
+                  <h3 className="text-lg font-semibold">{f.fragrances.name}</h3>
 
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm font-medium">
-                        {fragrance.rating}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <span className="text-muted-foreground text-sm">
-                        My rating:
-                      </span>
-                      <div className="flex">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-3 w-3 ${
-                              i < fragrance.userRating
-                                ? "fill-blue-400 text-blue-400"
-                                : "text-gray-300"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-1 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Price:</span>
-                      <span className="font-medium">{fragrance.price}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Category:</span>
-                      <span>{fragrance.category}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Tried at:</span>
-                      <span>{fragrance.location}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Date:</span>
-                      <span>
-                        {new Date(fragrance.dateTried).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-
-                  {fragrance.notes && (
+                  {f.fragrances.notes && (
                     <div className="bg-muted mt-3 rounded-md p-2">
-                      <p className="text-sm italic">{fragrance.notes}</p>
+                      <p className="text-sm italic">{f.fragrances.notes}</p>
                     </div>
                   )}
 
                   <div className="mt-4 space-y-2">
-                    {fragrance.verdict === "Must Buy" ||
+                    {/* {fragrance.verdict === "Must Buy" ||
                     fragrance.verdict === "Want to Buy" ? (
                       <div className="flex gap-2">
                         <Button size="sm" className="flex-1">
@@ -338,7 +229,7 @@ export default function TriedPage() {
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </CardContent>
