@@ -16,8 +16,9 @@ export const fragrances = pgTable(
   "fragrances",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }).notNull(),
-    url: varchar("url", { length: 1024 }).notNull(),
+    name: text("name").notNull(),
+    url: text("url").notNull(),
+    notes: text("notes").default("No Notes"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
