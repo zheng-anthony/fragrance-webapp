@@ -8,10 +8,26 @@ import {
   Viewowned,
   Viewtried,
   Viewwishlist,
-} from "~/components/quick-actions/quick-actions";
-
+} from "@/components/quick-actions/quick-actions";
+import { userLists } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 export default async function Homepage() {
   const fragrances = await db.query.fragrances.findMany();
+
+  const wishlist = await db
+    .select()
+    .from(userLists)
+    .where(eq(userLists.type, "wishlist"));
+
+  const owned = await db
+    .select()
+    .from(userLists)
+    .where(eq(userLists.type, "owned"));
+
+  const tried = await db
+    .select()
+    .from(userLists)
+    .where(eq(userLists.type, "tried"));
 
   return (
     <div className="bg-background min-h-screen">
@@ -26,17 +42,17 @@ export default async function Homepage() {
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground text-sm">Owned</span>
-                  <span className="font-semibold">placeholder#</span>
+                  <span className="font-semibold">{owned.length}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground text-sm">Tried</span>
-                  <span className="font-semibold">placeholder#</span>
+                  <span className="font-semibold">{tried.length}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground text-sm">
                     Wishlist
                   </span>
-                  <span className="font-semibold">placeholder#</span>
+                  <span className="font-semibold">{wishlist.length}</span>
                 </div>
               </CardContent>
             </Card>
