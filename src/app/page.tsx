@@ -77,7 +77,7 @@ export default async function Homepage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5" />
-                  Trending This Week
+                  Most Popular
                 </CardTitle>
               </CardHeader>
               <CardContent>

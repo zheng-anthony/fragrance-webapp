@@ -28,6 +28,7 @@ import { db } from "@/server/db";
 import { eq } from "drizzle-orm";
 import { fragrances } from "@/server/db/schema";
 import { userLists } from "@/server/db/schema";
+import { UserCard } from "~/components/cologne-card/cologne-cards";
 
 export const dynamic = "force-dynamic";
 
@@ -121,82 +122,11 @@ export default async function TriedPage() {
         {/* Tried Fragrances Grid */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {tried.map((f) => (
-            <Card
+            <UserCard
               key={f.fragrances.id}
-              className="cursor-pointer transition-shadow hover:shadow-lg"
-            >
-              <CardContent className="p-4">
-                <div className="relative mb-4 aspect-[3/4]">
-                  <Image
-                    src={f.fragrances.url || "/placeholder.svg"}
-                    alt={f.fragrances.name}
-                    fill
-                    className="rounded-md object-cover"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="text-lg font-semibold">{f.fragrances.name}</h3>
-
-                  {f.fragrances.notes && (
-                    <div className="bg-muted mt-3 rounded-md p-2">
-                      <p className="text-sm italic">{f.fragrances.notes}</p>
-                    </div>
-                  )}
-
-                  <div className="mt-4 space-y-2">
-                    <div className="flex gap-2">
-                      <Button size="sm" className="flex-1">
-                        <ShoppingCart className="mr-1 h-4 w-4" />
-                        Buy Now
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="flex-1 bg-transparent"
-                      >
-                        <Plus className="mr-1 h-4 w-4" />
-                        Add to Wishlist
-                      </Button>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="flex-1 bg-transparent"
-                      >
-                        Edit Notes
-                      </Button>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="bg-transparent px-2"
-                          >
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem className="text-green-600">
-                            Mark as Owned
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="text-blue-600">
-                            Add to Wishlist
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="text-orange-600">
-                            Change Verdict
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600">
-                            Remove from Tried
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              userLists={f.fragrances}
+              variant="tried"
+            />
           ))}
         </div>
       </div>

@@ -138,6 +138,7 @@ export function UserCard({
 
   return (
     <>
+      {/* wishlist */}
       {variant === "wishlist" && (
         <Card
           key={userLists.id}
@@ -211,6 +212,154 @@ export function UserCard({
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+      {/* tried */}
+      {variant === "tried" && (
+        <Card
+          key={userLists.id}
+          className="cursor-pointer transition-shadow hover:shadow-lg"
+        >
+          <CardContent className="p-4">
+            <div className="relative mb-4 aspect-[3/4]">
+              <Image
+                src={userLists.url || "/placeholder.svg"}
+                alt={userLists.name}
+                fill
+                className="rounded-md object-cover"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold">{userLists.name}</h3>
+
+              {userLists.notes && (
+                <div className="bg-muted mt-3 rounded-md p-2">
+                  <p className="text-sm italic">{userLists.notes}</p>
+                </div>
+              )}
+
+              <div className="mt-4 space-y-2">
+                <div className="flex gap-2">
+                  <Button size="sm" className="flex-1">
+                    <ShoppingCart className="mr-1 h-4 w-4" />
+                    Buy Now
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="flex-1 bg-transparent"
+                  >
+                    <Plus className="mr-1 h-4 w-4" />
+                    Add to Wishlist
+                  </Button>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="flex-1 bg-transparent"
+                  >
+                    Edit Notes
+                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="bg-transparent px-2"
+                      >
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem className="text-green-600">
+                        Mark as Owned
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="text-blue-600">
+                        Add to Wishlist
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="text-orange-600">
+                        Change Verdict
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="text-red-600">
+                        Remove from Tried
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+      {/* owned */}
+      {variant === "owned" && (
+        <Card
+          key={userLists.id}
+          className="cursor-pointer transition-shadow hover:shadow-lg"
+        >
+          <div className="relative aspect-[3/4]">
+            <Image
+              src={userLists.url}
+              alt={userLists.name}
+              fill
+              className="rounded-md object-cover"
+            />
+          </div>
+          <CardContent className="p-4">
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold">{userLists.name}</h3>
+
+              <div className="space-y-1 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Added:</span>
+                  <span>
+                    Added:{" "}
+                    {new Date(userLists.createdAt).toLocaleDateString()}{" "}
+                  </span>
+                </div>
+              </div>
+              <div className="mt-4 flex gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="flex-1 bg-transparent"
+                >
+                  Edit
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="flex-1 bg-transparent"
+                >
+                  Review
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="bg-transparent px-2"
+                    >
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem className="text-blue-600">
+                      Move to Wishlist
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="text-green-600">
+                      Mark as Tried Again
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="text-red-600">
+                      Remove from Collection
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
           </CardContent>
