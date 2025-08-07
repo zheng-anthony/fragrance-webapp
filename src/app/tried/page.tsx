@@ -145,91 +145,54 @@ export default async function TriedPage() {
                   )}
 
                   <div className="mt-4 space-y-2">
-                    {/* {fragrance.verdict === "Must Buy" ||
-                    fragrance.verdict === "Want to Buy" ? (
-                      <div className="flex gap-2">
-                        <Button size="sm" className="flex-1">
-                          <ShoppingCart className="mr-1 h-4 w-4" />
-                          Buy Now
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="flex-1 bg-transparent"
-                        >
-                          <Plus className="mr-1 h-4 w-4" />
-                          Add to Wishlist
-                        </Button>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="bg-transparent px-2"
-                            >
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem className="text-green-600">
-                              Mark as Owned
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="text-blue-600">
-                              Add to Wishlist
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="text-orange-600">
-                              Change Verdict
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-600">
-                              Remove from Tried
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    ) : (
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="flex-1 bg-transparent"
-                        >
-                          <MessageCircle className="mr-1 h-4 w-4" />
-                          Write Review
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="flex-1 bg-transparent"
-                        >
-                          Edit Notes
-                        </Button>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="bg-transparent px-2"
-                            >
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem className="text-green-600">
-                              Mark as Owned
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="text-blue-600">
-                              Add to Wishlist
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="text-orange-600">
-                              Change Verdict
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-600">
-                              Remove from Tried
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    )} */}
+                    <div className="flex gap-2">
+                      <Button size="sm" className="flex-1">
+                        <ShoppingCart className="mr-1 h-4 w-4" />
+                        Buy Now
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="flex-1 bg-transparent"
+                      >
+                        <Plus className="mr-1 h-4 w-4" />
+                        Add to Wishlist
+                      </Button>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="flex-1 bg-transparent"
+                      >
+                        Edit Notes
+                      </Button>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="bg-transparent px-2"
+                          >
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem className="text-green-600">
+                            Mark as Owned
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="text-blue-600">
+                            Add to Wishlist
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="text-orange-600">
+                            Change Verdict
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="text-red-600">
+                            Remove from Tried
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </div>
                 </div>
               </CardContent>
