@@ -20,26 +20,14 @@ import {
 import { fragrances, userLists } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { db } from "@/server/db";
+import { UserCard } from "~/components/cologne-card/cologne-cards";
 
 export default async function WishlistPage() {
   const wishlist = await db
     .select()
     .from(userLists)
     .innerJoin(fragrances, eq(userLists.fragranceId, fragrances.id))
-    .where(eq(userLists.type, "tried"));
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case "High":
-        return "bg-red-100 text-red-800";
-      case "Medium":
-        return "bg-yellow-100 text-yellow-800";
-      case "Low":
-        return "bg-green-100 text-green-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
+    .where(eq(userLists.type, "wishlist"));
 
   return (
     <div className="bg-background min-h-screen">
@@ -93,82 +81,11 @@ export default async function WishlistPage() {
         {/* Wishlist Grid */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {wishlist.map((f) => (
-            <Card
+            <UserCard
               key={f.fragrances.id}
-              className="cursor-pointer transition-shadow hover:shadow-lg"
-            >
-              <CardContent className="p-4">
-                <div className="relative mb-4 aspect-[3/4]">
-                  <Image
-                    src={f.fragrances.url || "/placeholder.svg"}
-                    alt={f.fragrances.name}
-                    fill
-                    className="rounded-md object-cover"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="text-lg font-semibold">{f.fragrances.name}</h3>
-
-                  <div className="space-y-1 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Added:</span>
-                      <span>
-                        {new Date(f.fragrances.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-
-                  {f.fragrances.notes && (
-                    <div className="bg-muted mt-3 rounded-md p-2">
-                      <p className="text-sm italic">{f.fragrances.notes}</p>
-                    </div>
-                  )}
-
-                  <div className="mt-4 space-y-2">
-                    <div className="flex gap-2">
-                      <Button size="sm" className="flex-1">
-                        <ShoppingCart className="mr-1 h-4 w-4" />
-                        Buy Now
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="flex-1 bg-transparent"
-                      >
-                        <Plus className="mr-1 h-4 w-4" />
-                        Mark Tried
-                      </Button>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="bg-transparent px-2"
-                          >
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem className="text-green-600">
-                            Mark as Owned
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="text-blue-600">
-                            Mark as Tried
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="text-orange-600">
-                            Change Priority
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600">
-                            Remove from Wishlist
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              userLists={f.fragrances}
+              variant="wishlist"
+            />
           ))}
         </div>
       </div>

@@ -29,6 +29,7 @@ export default async function OwnedPage() {
     .from(userLists)
     .innerJoin(fragrances, eq(userLists.fragranceId, fragrances.id))
     .where(eq(userLists.type, "owned"));
+
   return (
     <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 py-6">

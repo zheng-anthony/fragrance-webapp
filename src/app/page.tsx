@@ -2,7 +2,7 @@ import { db } from "../server/db";
 export const dynamic = "force-dynamic";
 import { TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import CologneCard from "~/components/cologne-card/cologne-card";
+import { CatalogCard } from "~/components/cologne-card/cologne-cards";
 import {
   Addcollection,
   Viewowned,
@@ -83,7 +83,7 @@ export default async function Homepage() {
               <CardContent>
                 <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                   {fragrances.map((f) => (
-                    <CologneCard key={f.id} fragrance={f} />
+                    <CatalogCard key={f.id} fragrance={f} />
                   ))}
                 </div>
               </CardContent>

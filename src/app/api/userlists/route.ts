@@ -46,3 +46,22 @@ export async function POST(req: Request) {
     });
   }
 }
+export async function DELETE(req: Request) {
+  const body = (await req.json()) as {
+    userId: number;
+    fragranceId: number;
+    type: string;
+  };
+
+  const { userId, fragranceId, type } = body;
+
+  await db
+    .delete(userLists)
+    .where(
+      and(
+        eq(userLists.userId, userId),
+        eq(userLists.fragranceId, fragranceId),
+        eq(userLists.type, type),
+      ),
+    );
+}
