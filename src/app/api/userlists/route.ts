@@ -58,32 +58,23 @@ export async function POST(req: Request) {
   }
 }
 export async function DELETE(req: Request) {
-  try {
-    const body = await req.json();
+  const body = (await req.json()) as {
+    userId: number;
+    id: number;
+    type: string;
+  };
 
-    const { userId, id, type } = body;
+  const { userId, id, type } = body;
 
-    if (!userId || !id || !type) {
-      console.error("Missing fields:", { userId, id, type });
-      return NextResponse.json({ error: "Missing fields" }, { status: 400 });
-    }
-
-    const deleted = await db
-      .delete(userLists)
-      .where(
-        and(
-          eq(userLists.userId, userId),
-          eq(userLists.fragranceId, id),
-          eq(userLists.type, type),
-        ),
-      );
-
-    return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error("DELETE /api/userlists error:", err);
-    return NextResponse.json(
-      { error: "Internal Server Error", detail: String(err) },
-      { status: 500 },
+  await db
+    .delete(userLists)
+    .where(
+      and(
+        eq(userLists.userId, userId),
+        eq(userLists.fragranceId, id),
+        eq(userLists.type, type),
+      ),
     );
-  }
+
+  return NextResponse.json({ success: true });
 }
