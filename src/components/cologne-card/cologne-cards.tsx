@@ -17,6 +17,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
+import { useRouter } from "next/navigation";
+
+export const dynamic = "force-dynamic";
 
 export function CatalogCard({
   fragrance,
@@ -36,7 +39,7 @@ export function CatalogCard({
       await signIn();
       return;
     }
-    await fetch("/api/userlists/update", {
+    await fetch("/api/userlists/", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
@@ -120,20 +123,24 @@ export function UserCard({
 
   const { data: session } = useSession();
 
+  const router = useRouter();
+
   const handleDelete = async (type: "wishlist" | "owned" | "tried") => {
     if (!session?.user.id) {
       await signIn();
       return;
     }
-    await fetch("/api/userlists/update", {
+
+    await fetch("/api/userlists/", {
       method: "DELETE",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
         userId: session?.user.id,
-        userListsId: userLists.id,
+        id,
         type,
       }),
     });
+    router.refresh();
   };
 
   return (
@@ -206,7 +213,10 @@ export function UserCard({
                       <DropdownMenuItem className="text-orange-600">
                         Change Priority
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-red-600">
+                      <DropdownMenuItem
+                        onClick={() => handleDelete("wishlist")}
+                        className="text-red-600"
+                      >
                         Remove from Wishlist
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -285,7 +295,10 @@ export function UserCard({
                       <DropdownMenuItem className="text-orange-600">
                         Change Verdict
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-red-600">
+                      <DropdownMenuItem
+                        onClick={() => handleDelete("tried")}
+                        className="text-red-600"
+                      >
                         Remove from Tried
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -323,20 +336,13 @@ export function UserCard({
                   </span>
                 </div>
               </div>
-              <div className="mt-4 flex gap-2">
+              <div className="flex gap-2">
                 <Button
                   size="sm"
                   variant="outline"
                   className="flex-1 bg-transparent"
                 >
-                  Edit
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="flex-1 bg-transparent"
-                >
-                  Review
+                  Edit Notes
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -348,15 +354,24 @@ export function UserCard({
                       <MoreHorizontal className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem className="text-blue-600">
-                      Move to Wishlist
+                  <DropdownMenuContent
+                    align="end"
+                    className="bg-black text-white"
+                  >
+                    <DropdownMenuItem className="text-green-400">
+                      Mark as Owned
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-green-600">
-                      Mark as Tried Again
+                    <DropdownMenuItem className="text-blue-400">
+                      Add to Wishlist
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-600">
-                      Remove from Collection
+                    <DropdownMenuItem className="text-orange-400">
+                      Change Verdict
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleDelete("owned")}
+                      className="text-red-600"
+                    >
+                      Remove from Owned
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
