@@ -91,7 +91,7 @@ export function Addcollection() {
       onClick={handleAdd}
     >
       <Plus className="mr-2 h-4 w-4" />
-      Add to Collection
+      My Collections
     </Button>
   );
 }

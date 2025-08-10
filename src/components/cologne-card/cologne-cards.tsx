@@ -33,7 +33,7 @@ export function CatalogCard({
   };
 }) {
   const { data: session } = useSession();
-
+  const router = useRouter();
   const handleAdd = async (type: "wishlist" | "owned" | "tried") => {
     if (!session?.user.id) {
       await signIn();
@@ -50,6 +50,7 @@ export function CatalogCard({
         fragrance_name: fragrance.name,
       }),
     });
+    router.refresh();
   };
 
   return (

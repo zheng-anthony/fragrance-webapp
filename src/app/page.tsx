@@ -11,6 +11,7 @@ import {
 } from "@/components/quick-actions/quick-actions";
 import { userLists } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
+
 export default async function Homepage() {
   const fragrances = await db.query.fragrances.findMany();
 
