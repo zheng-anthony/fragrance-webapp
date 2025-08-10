@@ -1,4 +1,4 @@
-import { Search, Grid, MoreHorizontal } from "lucide-react";
+import { Search, Grid } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,13 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Image from "next/image";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { db } from "@/server/db";
 import { eq } from "drizzle-orm";
 import { userLists } from "@/server/db/schema";

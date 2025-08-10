@@ -23,21 +23,6 @@ export default async function TriedPage() {
     .innerJoin(fragrances, eq(userLists.fragranceId, fragrances.id))
     .where(eq(userLists.type, "tried"));
 
-  const getVerdictColor = (verdict: string) => {
-    switch (verdict) {
-      case "Must Buy":
-        return "bg-green-100 text-green-800";
-      case "Want to Buy":
-        return "bg-blue-100 text-blue-800";
-      case "Maybe":
-        return "bg-yellow-100 text-yellow-800";
-      case "Pass":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
   return (
     <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 py-6">
