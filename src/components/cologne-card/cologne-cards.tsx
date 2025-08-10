@@ -34,6 +34,7 @@ export function CatalogCard({
 }) {
   const { data: session } = useSession();
   const router = useRouter();
+  const go = () => router.push(`/fragrances/${fragrance.id}`);
   const handleAdd = async (type: "wishlist" | "owned" | "tried") => {
     if (!session?.user.id) {
       await signIn();
@@ -64,6 +65,7 @@ export function CatalogCard({
           alt={fragrance.name}
           fill
           className="rounded-md object-cover"
+          onClick={go}
         />
       </div>
 
