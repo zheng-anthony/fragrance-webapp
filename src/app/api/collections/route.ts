@@ -11,8 +11,8 @@ export async function POST(req: Request) {
     userId: number;
     collection_description: string;
     collection_privacy: string;
-    collectionItems: object;
   };
+
   const {
     userId,
     collection_name,
@@ -23,7 +23,10 @@ export async function POST(req: Request) {
   const existing: collections | undefined =
     await db.query.collections.findFirst({
       where: (collections, { eq, and }) =>
-        and(eq(collections.collection_name, collection_name)),
+        and(
+          eq(collections.collection_name, collection_name),
+          eq(collections.userId, userId),
+        ),
     });
   if (existing) {
     return NextResponse.json(

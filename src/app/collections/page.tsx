@@ -87,7 +87,6 @@ export default async function CollectionsPage() {
               Organize your fragrances into custom collections
             </p>
           </div>
-
           <CreateCollectionButton />
         </div>
 

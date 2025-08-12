@@ -48,6 +48,7 @@ export default function CreateCollectionButton() {
         collection_privacy: privacy,
       }),
     });
+    router.refresh();
   };
 
   return (
@@ -100,16 +101,10 @@ export default function CreateCollectionButton() {
           </div>
         </div>
         <div className="flex justify-end gap-2">
-          <Button
-            variant="outline"
-            onClick={() => setIsCreateDialogOpen(false)}
-          >
+          <Button variant="outline" onClick={() => setisOpen(false)}>
             Cancel
           </Button>
-          <Button
-            onClick={createCollection}
-            disabled={!newCollectionName.trim()}
-          >
+          <Button onClick={createCollection} disabled={!name.trim()}>
             Create Collection
           </Button>
         </div>
