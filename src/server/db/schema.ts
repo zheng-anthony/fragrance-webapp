@@ -63,34 +63,8 @@ export const userLists = pgTable(
   }),
 );
 
-export const collections = pgTable("collection", {
-  id: serial("id").primaryKey(),
-  collectionDescription: text("collectionDescription"),
-  collectionName: text("collectionName").notNull(),
-  collectionPrivacy: text("collectionPrivacy").notNull(),
-  userId: integer("user_id")
-    .notNull()
-    .references(() => usersTable.id, { onDelete: "cascade" }),
-});
-
-export const collectionItems = pgTable("collectionItems", {
-  id: serial("id").primaryKey(),
-  collectionId: integer("collectionId")
-    .notNull()
-    .references(() => collections.id, { onDelete: "cascade" }),
-  fragranceId: integer("fragranceId")
-    .notNull()
-    .references(() => fragrances.id, { onDelete: "cascade" }),
-});
-
 export type InsertUser = typeof usersTable.$inferInsert;
 export type SelectUser = typeof usersTable.$inferSelect;
 
 export type InsertList = typeof userLists.$inferInsert;
 export type SelectList = typeof userLists.$inferSelect;
-
-export type InsertCollection = typeof collections.$inferInsert;
-export type SelectCollection = typeof collections.$inferSelect;
-
-export type InsertCollectionItem = typeof collectionItems.$inferInsert;
-export type SelectCollectionItem = typeof collectionItems.$inferSelect;

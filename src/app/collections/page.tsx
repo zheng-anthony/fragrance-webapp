@@ -20,7 +20,6 @@ import {
 import { db } from "@/server/db";
 import { eq, sql } from "drizzle-orm";
 import { userLists } from "~/server/db/schema";
-import { collections } from "~/server/db/schema";
 import CreateCollectionButton from "~/app/collections/create-collection/create-collection";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
