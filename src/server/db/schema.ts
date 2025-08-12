@@ -63,21 +63,21 @@ export const userLists = pgTable(
   }),
 );
 
-export const collectionsTable = pgTable("collection", {
+export const collections = pgTable("collection", {
   id: serial("id").primaryKey(),
   collection_description: text("collection_description"),
-  collections_name: text("collection_name").notNull(),
+  collection_name: text("collection_name").notNull(),
   collection_privacy: text("collection_privacy").notNull(),
   userId: integer("user_id")
     .notNull()
     .references(() => usersTable.id, { onDelete: "cascade" }),
 });
 
-export const collectionItemsTable = pgTable("collectionItems", {
+export const collectionItems = pgTable("collectionItems", {
   id: serial("id").primaryKey(),
   collection_id: integer("collection_id")
     .notNull()
-    .references(() => collectionsTable.id, { onDelete: "cascade" }),
+    .references(() => collections.id, { onDelete: "cascade" }),
   fragrance_id: integer("fragrance_id")
     .notNull()
     .references(() => fragrances.id, { onDelete: "cascade" }),
@@ -89,8 +89,8 @@ export type SelectUser = typeof usersTable.$inferSelect;
 export type InsertList = typeof userLists.$inferInsert;
 export type SelectList = typeof userLists.$inferSelect;
 
-export type InsertCollection = typeof collectionsTable.$inferInsert;
-export type SelectCollection = typeof collectionsTable.$inferSelect;
+export type InsertCollection = typeof collections.$inferInsert;
+export type SelectCollection = typeof collections.$inferSelect;
 
-export type InsertCollectionItem = typeof collectionItemsTable.$inferInsert;
-export type SelectCollectionItem = typeof collectionItemsTable.$inferSelect;
+export type InsertCollectionItem = typeof collectionItems.$inferInsert;
+export type SelectCollectionItem = typeof collectionItems.$inferSelect;

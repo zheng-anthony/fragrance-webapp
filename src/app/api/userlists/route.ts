@@ -3,7 +3,7 @@ import { db } from "@/server/db";
 import { userLists } from "~/server/db/schema";
 import { and, eq } from "drizzle-orm";
 
-type Userlists = typeof userLists.$inferSelect;
+type userlists = typeof userLists.$inferSelect;
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
 
   const { userId, type, fragranceId, notes } = body;
 
-  const existing: Userlists | undefined = await db.query.userLists.findFirst({
+  const existing: userlists | undefined = await db.query.userLists.findFirst({
     where: (userlist, { eq, and }) =>
       and(
         eq(userlist.userId, userId),

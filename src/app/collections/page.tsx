@@ -37,18 +37,11 @@ import Link from "next/link";
 import { db } from "@/server/db";
 import { eq, sql } from "drizzle-orm";
 import { userLists } from "~/server/db/schema";
+import { collections } from "~/server/db/schema";
+import CreateCollectionButton from "~/app/collections/create-collection/create-collection";
+import { signIn, useSession } from "next-auth/react";
 
 export default async function CollectionsPage() {
-  // const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  // const [newCollectionName, setNewCollectionName] = useState("");
-  // const [newCollectionDescription, setNewCollectionDescription] = useState("");
-  // const [newCollectionPrivacy, setNewCollectionPrivacy] = useState("public");
-
-  const counter = await db.select({
-    type: userLists.type,
-    count: sql<number>`cast(count($userLists.id) as int)`,
-  });
-
   // Custom collections
   const customCollections = [
     {
@@ -83,19 +76,6 @@ export default async function CollectionsPage() {
     },
   ];
 
-  const handleCreateCollection = () => {
-    // Handle collection creation logic here
-    console.log("Creating collection:", {
-      name: newCollectionName,
-      description: newCollectionDescription,
-      privacy: newCollectionPrivacy,
-    });
-    setIsCreateDialogOpen(false);
-    setNewCollectionName("");
-    setNewCollectionDescription("");
-    setNewCollectionPrivacy("public");
-  };
-
   return (
     <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 py-6">
@@ -108,78 +88,7 @@ export default async function CollectionsPage() {
             </p>
           </div>
 
-          <Dialog
-            open={isCreateDialogOpen}
-            onOpenChange={setIsCreateDialogOpen}
-          >
-            <DialogTrigger asChild>
-              <Button className="gap-2">
-                <Plus className="h-4 w-4" />
-                Create Collection
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Create New Collection</DialogTitle>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="name">Collection Name</Label>
-                  <Input
-                    id="name"
-                    value={newCollectionName}
-                    onChange={(e) => setNewCollectionName(e.target.value)}
-                    placeholder="e.g., Winter Favorites"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    value={newCollectionDescription}
-                    onChange={(e: {
-                      target: { value: SetStateAction<string> };
-                    }) => setNewCollectionDescription(e.target.value)}
-                    placeholder="Describe your collection..."
-                    rows={3}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="privacy">Privacy</Label>
-                  <Select
-                    value={newCollectionPrivacy}
-                    onValueChange={setNewCollectionPrivacy}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="public">
-                        Public - Anyone can see
-                      </SelectItem>
-                      <SelectItem value="private">
-                        Private - Only you can see
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div className="flex justify-end gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setIsCreateDialogOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handleCreateCollection}
-                  disabled={!newCollectionName.trim()}
-                >
-                  Create Collection
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <CreateCollectionButton />
         </div>
 
         {/* Search and Filters */}
@@ -349,10 +258,6 @@ export default async function CollectionsPage() {
               <p className="text-muted-foreground mb-4">
                 Create your first custom collection to organize your fragrances
               </p>
-              <Button onClick={() => setIsCreateDialogOpen(true)}>
-                <Plus className="mr-2 h-4 w-4" />
-                Create Your First Collection
-              </Button>
             </CardContent>
           </Card>
         )}
