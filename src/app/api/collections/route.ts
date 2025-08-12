@@ -7,24 +7,20 @@ type collections = typeof collections.$inferSelect;
 
 export async function POST(req: Request) {
   const body = (await req.json()) as {
-    collection_name: string;
+    collectionName: string;
     userId: number;
-    collection_description: string;
-    collection_privacy: string;
+    collectionDescription: string;
+    collectionPrivacy: string;
   };
 
-  const {
-    userId,
-    collection_name,
-    collection_description,
-    collection_privacy,
-  } = body;
+  const { userId, collectionName, collectionDescription, collectionPrivacy } =
+    body;
 
   const existing: collections | undefined =
     await db.query.collections.findFirst({
       where: (collections, { eq, and }) =>
         and(
-          eq(collections.collection_name, collection_name),
+          eq(collections.collectionName, collectionName),
           eq(collections.userId, userId),
         ),
     });
@@ -36,9 +32,9 @@ export async function POST(req: Request) {
   } else {
     await db.insert(collections).values({
       userId,
-      collection_name,
-      collection_description,
-      collection_privacy,
+      collectionName,
+      collectionDescription,
+      collectionPrivacy,
     });
     return NextResponse.json({ message: "Collection Added." }, { status: 200 });
   }

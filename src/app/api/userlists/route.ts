@@ -2,20 +2,27 @@ import { NextResponse } from "next/server";
 import { db } from "@/server/db";
 import { userLists } from "~/server/db/schema";
 import { and, eq } from "drizzle-orm";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 type userlists = typeof userLists.$inferSelect;
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    throw new Error("Not signed in");
+  }
+  const userId = session?.user.id;
+
   const body = (await req.json()) as {
-    userId: number;
     fragranceId: number;
     type: string;
     notes: string;
   };
 
-  const { userId, type, fragranceId, notes } = body;
+  const { type, fragranceId, notes } = body;
 
   const existing: userlists | undefined = await db.query.userLists.findFirst({
     where: (userlist, { eq, and }) =>
@@ -58,13 +65,17 @@ export async function POST(req: Request) {
   }
 }
 export async function DELETE(req: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    throw new Error("Not signed in");
+  }
+  const userId = session?.user.id;
   const body = (await req.json()) as {
-    userId: number;
     id: number;
     type: string;
   };
 
-  const { userId, id, type } = body;
+  const { id, type } = body;
 
   await db
     .delete(userLists)

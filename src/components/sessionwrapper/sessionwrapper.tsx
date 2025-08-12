@@ -1,4 +1,4 @@
-"use client"; // ✅ required for client-side context
+"use client";
 
 import { SessionProvider } from "next-auth/react";
 import React from "react";

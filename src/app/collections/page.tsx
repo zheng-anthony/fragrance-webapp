@@ -39,16 +39,25 @@ import { eq, sql } from "drizzle-orm";
 import { userLists } from "~/server/db/schema";
 import { collections } from "~/server/db/schema";
 import CreateCollectionButton from "~/app/collections/create-collection/create-collection";
-import { signIn, useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "~/server/auth";
 
 export default async function CollectionsPage() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    throw new Error("Not signed in");
+  }
+  const userId = session?.user.id;
+
   const defaultCount = await db
     .select({
       wishlist: sql<number>`SUM(CASE WHEN ${collections} = 'wishlist' THEN 1 ELSE 0 END)`,
       owned: sql<number>`SUM(CASE WHEN ${collections} = 'owned' THEN 1 ELSE 0 END)`,
       tried: sql<number>`SUM(CASE WHEN ${collections} = 'tried' THEN 1 ELSE 0 END)`,
     })
-    .from(collections);
+    .from(collections)
+    .where(eq(collections.userId, userId));
+  console.log(defaultCount);
   // Custom collections
   const customCollections = [
     {

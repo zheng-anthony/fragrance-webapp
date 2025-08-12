@@ -44,11 +44,11 @@ export const userLists = pgTable(
     type: text("type").notNull(),
     fragranceId: integer("fragranceId").notNull(),
     notes: text("notes"),
-    userId: integer("user_id")
+    userId: integer("userId")
       .notNull()
       .references(() => usersTable.id, { onDelete: "cascade" }),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    updatedAt: timestamp("updated_at")
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+    updatedAt: timestamp("updatedAt")
       .notNull()
       .$onUpdate(() => new Date()),
   },
@@ -65,9 +65,9 @@ export const userLists = pgTable(
 
 export const collections = pgTable("collection", {
   id: serial("id").primaryKey(),
-  collection_description: text("collection_description"),
-  collection_name: text("collection_name").notNull(),
-  collection_privacy: text("collection_privacy").notNull(),
+  collectionDescription: text("collectionDescription"),
+  collectionName: text("collectionName").notNull(),
+  collectionPrivacy: text("collectionPrivacy").notNull(),
   userId: integer("user_id")
     .notNull()
     .references(() => usersTable.id, { onDelete: "cascade" }),
@@ -75,10 +75,10 @@ export const collections = pgTable("collection", {
 
 export const collectionItems = pgTable("collectionItems", {
   id: serial("id").primaryKey(),
-  collection_id: integer("collection_id")
+  collectionId: integer("collectionId")
     .notNull()
     .references(() => collections.id, { onDelete: "cascade" }),
-  fragrance_id: integer("fragrance_id")
+  fragranceId: integer("fragranceId")
     .notNull()
     .references(() => fragrances.id, { onDelete: "cascade" }),
 });
