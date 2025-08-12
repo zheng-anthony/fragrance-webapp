@@ -65,7 +65,9 @@ export const userLists = pgTable(
 
 export const collectionsTable = pgTable("collection", {
   id: serial("id").primaryKey(),
+  collection_description: text("collection_description"),
   collections_name: text("collection_name").notNull(),
+  collection_privacy: text("collection_privacy").notNull(),
   userId: integer("user_id")
     .notNull()
     .references(() => usersTable.id, { onDelete: "cascade" }),

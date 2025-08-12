@@ -1,5 +1,3 @@
-"use client";
-import { useState, type SetStateAction } from "react";
 import {
   Plus,
   Users,
@@ -41,15 +39,15 @@ import { eq, sql } from "drizzle-orm";
 import { userLists } from "~/server/db/schema";
 
 export default async function CollectionsPage() {
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [newCollectionName, setNewCollectionName] = useState("");
-  const [newCollectionDescription, setNewCollectionDescription] = useState("");
-  const [newCollectionPrivacy, setNewCollectionPrivacy] = useState("public");
+  // const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  // const [newCollectionName, setNewCollectionName] = useState("");
+  // const [newCollectionDescription, setNewCollectionDescription] = useState("");
+  // const [newCollectionPrivacy, setNewCollectionPrivacy] = useState("public");
 
-  // const counter = await db.select({
-  //   type: userLists.type,
-  //   count: sql<number>`cast(count($userLists.id) as int)`,
-  // });
+  const counter = await db.select({
+    type: userLists.type,
+    count: sql<number>`cast(count($userLists.id) as int)`,
+  });
 
   // Custom collections
   const customCollections = [
