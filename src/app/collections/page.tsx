@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, type SetStateAction } from "react";
 import {
   Plus,
@@ -37,49 +36,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { db } from "@/server/db";
+import { eq, sql } from "drizzle-orm";
+import { userLists } from "~/server/db/schema";
 
-export default function CollectionsPage() {
+export default async function CollectionsPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [newCollectionName, setNewCollectionName] = useState("");
   const [newCollectionDescription, setNewCollectionDescription] = useState("");
   const [newCollectionPrivacy, setNewCollectionPrivacy] = useState("public");
 
-  // Default collections
-  const defaultCollections = [
-    {
-      id: "owned",
-      name: "Owned",
-      description: "Fragrances you own",
-      count: 47,
-      icon: Check,
-      href: "/owned",
-      isDefault: true,
-      privacy: "private",
-      lastUpdated: "2024-01-20",
-    },
-    {
-      id: "wishlist",
-      name: "Wishlist",
-      description: "Want to try",
-      count: 23,
-      icon: Heart,
-      href: "/wishlist",
-      isDefault: true,
-      privacy: "private",
-      lastUpdated: "2024-01-19",
-    },
-    {
-      id: "tried",
-      name: "Tried",
-      description: "Tested fragrances",
-      count: 156,
-      icon: Eye,
-      href: "/tried",
-      isDefault: true,
-      privacy: "private",
-      lastUpdated: "2024-01-18",
-    },
-  ];
+  // const counter = await db.select({
+  //   type: userLists.type,
+  //   count: sql<number>`cast(count($userLists.id) as int)`,
+  // });
 
   // Custom collections
   const customCollections = [
@@ -258,7 +228,7 @@ export default function CollectionsPage() {
         <div className="mb-8">
           <h2 className="mb-4 text-xl font-semibold">Default Collections</h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {defaultCollections.map((collection) => {
+            {/* {defaultCollections.map((collection) => {
               const Icon = collection.icon;
               return (
                 <Link key={collection.id} href={collection.href}>
@@ -288,7 +258,7 @@ export default function CollectionsPage() {
                   </Card>
                 </Link>
               );
-            })}
+            })} */}
           </div>
         </div>
 
