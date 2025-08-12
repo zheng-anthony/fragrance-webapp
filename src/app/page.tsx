@@ -9,7 +9,7 @@ import {
   Viewtried,
   Viewwishlist,
 } from "@/components/quick-actions/quick-actions";
-import { userLists } from "@/server/db/schema";
+import { collections } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
 export default async function Homepage() {
@@ -17,18 +17,18 @@ export default async function Homepage() {
 
   const wishlist = await db
     .select()
-    .from(userLists)
-    .where(eq(userLists.type, "wishlist"));
+    .from(collections)
+    .where(eq(collections.type, "wishlist"));
 
   const owned = await db
     .select()
-    .from(userLists)
-    .where(eq(userLists.type, "owned"));
+    .from(collections)
+    .where(eq(collections.type, "owned"));
 
   const tried = await db
     .select()
-    .from(userLists)
-    .where(eq(userLists.type, "tried"));
+    .from(collections)
+    .where(eq(collections.type, "tried"));
 
   return (
     <div className="bg-background min-h-screen">

@@ -37,7 +37,7 @@ export const usersTable = pgTable("users", {
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
 });
-export const userLists = pgTable(
+export const collections = pgTable(
   "userLists",
   {
     id: serial("id").primaryKey(),
@@ -66,5 +66,5 @@ export const userLists = pgTable(
 export type InsertUser = typeof usersTable.$inferInsert;
 export type SelectUser = typeof usersTable.$inferSelect;
 
-export type InsertList = typeof userLists.$inferInsert;
-export type SelectList = typeof userLists.$inferSelect;
+export type InsertList = typeof collections.$inferInsert;
+export type SelectList = typeof collections.$inferSelect;

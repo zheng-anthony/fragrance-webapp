@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { db } from "@/server/db";
-import { userLists } from "~/server/db/schema";
+import { collections } from "~/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
 
-type userlists = typeof userLists.$inferSelect;
+type userlists = typeof collections.$inferSelect;
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
   });
   if (existing) {
     await db
-      .update(userLists)
+      .update(collections)
       .set({
         type,
         notes,
@@ -42,9 +42,9 @@ export async function POST(req: Request) {
       })
       .where(
         and(
-          eq(userLists.userId, userId),
-          eq(userLists.fragranceId, fragranceId),
-          eq(userLists.type, type),
+          eq(collections.userId, userId),
+          eq(collections.fragranceId, fragranceId),
+          eq(collections.type, type),
         ),
       );
     return NextResponse.json(
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       { status: 200 },
     );
   } else {
-    await db.insert(userLists).values({
+    await db.insert(collections).values({
       userId,
       fragranceId,
       type,
@@ -78,12 +78,12 @@ export async function DELETE(req: Request) {
   const { id, type } = body;
 
   await db
-    .delete(userLists)
+    .delete(collections)
     .where(
       and(
-        eq(userLists.userId, userId),
-        eq(userLists.fragranceId, id),
-        eq(userLists.type, type),
+        eq(collections.userId, userId),
+        eq(collections.fragranceId, id),
+        eq(collections.type, type),
       ),
     );
 

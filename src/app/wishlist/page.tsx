@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { fragrances, userLists } from "@/server/db/schema";
+import { fragrances, collections } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { db } from "@/server/db";
 import { UserCard } from "~/components/cologne-card/cologne-cards";
@@ -16,9 +16,9 @@ import { UserCard } from "~/components/cologne-card/cologne-cards";
 export default async function WishlistPage() {
   const wishlist = await db
     .select()
-    .from(userLists)
-    .innerJoin(fragrances, eq(userLists.fragranceId, fragrances.id))
-    .where(eq(userLists.type, "wishlist"));
+    .from(collections)
+    .innerJoin(fragrances, eq(collections.fragranceId, fragrances.id))
+    .where(eq(collections.type, "wishlist"));
 
   return (
     <div className="bg-background min-h-screen">
