@@ -41,23 +41,48 @@ import { collections } from "~/server/db/schema";
 import CreateCollectionButton from "~/app/collections/create-collection/create-collection";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
+import { DefaultCard } from "./collection-card/collection-card";
 
 export default async function CollectionsPage() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
     throw new Error("Not signed in");
   }
-  const userId = session?.user.id;
+  const userId = Number(session?.user.id);
 
-  const defaultCount = await db
+  const rows = await db
     .select({
-      wishlist: sql<number>`SUM(CASE WHEN ${collections} = 'wishlist' THEN 1 ELSE 0 END)`,
-      owned: sql<number>`SUM(CASE WHEN ${collections} = 'owned' THEN 1 ELSE 0 END)`,
-      tried: sql<number>`SUM(CASE WHEN ${collections} = 'tried' THEN 1 ELSE 0 END)`,
+      wishlist: sql<number>`COALESCE(SUM(CASE WHEN ${userLists.type}='wishlist' THEN 1 ELSE 0 END),0)`,
+      owned: sql<number>`COALESCE(SUM(CASE WHEN ${userLists.type}='owned'    THEN 1 ELSE 0 END),0)`,
+      tried: sql<number>`COALESCE(SUM(CASE WHEN ${userLists.type}='tried'    THEN 1 ELSE 0 END),0)`,
     })
-    .from(collections)
-    .where(eq(collections.userId, userId));
-  console.log(defaultCount);
+    .from(userLists)
+    .where(eq(userLists.userId, userId));
+  const [counts = { wishlist: 0, owned: 0, tried: 0 }] = rows;
+
+  const defaultcollections = [
+    {
+      id: "wishlist",
+      name: "wishlist",
+      count: counts.wishlist,
+      description: "Fragrances you own",
+      icon: "heart",
+    },
+    {
+      id: "owned",
+      name: "owned",
+      count: counts.owned,
+      description: "Want to try",
+      icon: "check",
+    },
+    {
+      id: "tried",
+      name: "tried",
+      count: counts.tried,
+      description: "Tested fragrances",
+      icon: "eye",
+    },
+  ];
   // Custom collections
   const customCollections = [
     {
@@ -145,44 +170,20 @@ export default async function CollectionsPage() {
             </div>
           </CardContent>
         </Card>
-
-        {/* Default Collections */}
-        {/* <div className="mb-8">
+        <div className="mb-8">
           <h2 className="mb-4 text-xl font-semibold">Default Collections</h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {defaultCollections.map((collection) => {
-              const Icon = collection.icon;
-              return (
-                <Link key={collection.id} href={collection.href}>
-                  <Card className="cursor-pointer transition-shadow hover:shadow-md">
-                    <CardContent className="p-4">
-                      <div className="mb-3 flex items-center gap-3">
-                        <div className="bg-primary/10 rounded-lg p-2">
-                          <Icon className="text-primary h-5 w-5" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-semibold">{collection.name}</h3>
-                          <p className="text-muted-foreground text-sm">
-                            {collection.description}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-muted-foreground flex items-center justify-between text-sm">
-                        <span>{collection.count} items</span>
-                        <span>
-                          Updated{" "}
-                          {new Date(
-                            collection.lastUpdated,
-                          ).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              );
-            })}
+            {defaultcollections.map((collection) => (
+              <DefaultCard
+                key={collection.id}
+                name={collection.name}
+                count={collection.count}
+                description={collection.description}
+                icon={collection.icon}
+              />
+            ))}
           </div>
-        </div> */}
+        </div>
 
         {/* Custom Collections */}
         <div>
