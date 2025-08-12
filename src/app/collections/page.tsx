@@ -42,6 +42,13 @@ import CreateCollectionButton from "~/app/collections/create-collection/create-c
 import { signIn, useSession } from "next-auth/react";
 
 export default async function CollectionsPage() {
+  const defaultCount = await db
+    .select({
+      wishlist: sql<number>`SUM(CASE WHEN ${collections} = 'wishlist' THEN 1 ELSE 0 END)`,
+      owned: sql<number>`SUM(CASE WHEN ${collections} = 'owned' THEN 1 ELSE 0 END)`,
+      tried: sql<number>`SUM(CASE WHEN ${collections} = 'tried' THEN 1 ELSE 0 END)`,
+    })
+    .from(collections);
   // Custom collections
   const customCollections = [
     {
@@ -131,10 +138,10 @@ export default async function CollectionsPage() {
         </Card>
 
         {/* Default Collections */}
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <h2 className="mb-4 text-xl font-semibold">Default Collections</h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {/* {defaultCollections.map((collection) => {
+            {defaultCollections.map((collection) => {
               const Icon = collection.icon;
               return (
                 <Link key={collection.id} href={collection.href}>
@@ -164,9 +171,9 @@ export default async function CollectionsPage() {
                   </Card>
                 </Link>
               );
-            })} */}
+            })}
           </div>
-        </div>
+        </div> */}
 
         {/* Custom Collections */}
         <div>
