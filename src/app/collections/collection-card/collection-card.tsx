@@ -24,28 +24,24 @@ export function DefaultCard({
   const Icon = getIcon(icon);
 
   return (
-    <div className="mb-8">
-      <h2 className="mb-4 text-xl font-semibold">Default Collections</h2>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
-      <Card
-        onClick={() => router.push(`/${name}`)}
-        className="cursor-pointer transition-shadow hover:shadow-md"
-      >
-        <CardContent className="p-4">
-          <div className="mb-3 flex items-center gap-3">
-            <div className="bg-primary/10 rounded-lg p-2">
-              <Icon className="text-primary h-5 w-5" />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-semibold">{name}</h3>
-              <p className="text-muted-foreground text-sm">{description}</p>
-            </div>
+    <Card
+      onClick={() => router.push(`/${name}`)}
+      className="cursor-pointer transition-shadow hover:shadow-md"
+    >
+      <CardContent className="p-4">
+        <div className="mb-3 flex items-center gap-3">
+          <div className="bg-primary/10 rounded-lg p-2">
+            <Icon className="text-primary h-5 w-5" />
           </div>
-          <div className="text-muted-foreground flex items-center justify-between text-sm">
-            <span>{count} items</span>
+          <div className="flex-1">
+            <h3 className="font-semibold">{name}</h3>
+            <p className="text-muted-foreground text-sm">{description}</p>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+        <div className="text-muted-foreground flex items-center justify-between text-sm">
+          <span>{count} items</span>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

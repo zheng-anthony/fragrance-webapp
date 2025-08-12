@@ -3,7 +3,7 @@ import { db } from "@/server/db";
 import { userLists } from "~/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/server/auth";
 
 type userlists = typeof userLists.$inferSelect;
 
