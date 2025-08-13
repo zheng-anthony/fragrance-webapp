@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { db } from "@/server/db";
 import { eq, sql } from "drizzle-orm";
-import { collections } from "~/server/db/schema";
+import { collectionsItems } from "~/server/db/schema";
 import CreateCollectionButton from "~/app/collections/create-collection/create-collection";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
@@ -34,12 +34,12 @@ export default async function CollectionsPage() {
 
   const rows = await db
     .select({
-      wishlist: sql<number>`COALESCE(SUM(CASE WHEN ${collections.type}='wishlist' THEN 1 ELSE 0 END),0)`,
-      owned: sql<number>`COALESCE(SUM(CASE WHEN ${collections.type}='owned'    THEN 1 ELSE 0 END),0)`,
-      tried: sql<number>`COALESCE(SUM(CASE WHEN ${collections.type}='tried'    THEN 1 ELSE 0 END),0)`,
+      wishlist: sql<number>`COALESCE(SUM(CASE WHEN ${collectionsItems.type}='wishlist' THEN 1 ELSE 0 END),0)`,
+      owned: sql<number>`COALESCE(SUM(CASE WHEN ${collectionsItems.type}='owned'    THEN 1 ELSE 0 END),0)`,
+      tried: sql<number>`COALESCE(SUM(CASE WHEN ${collectionsItems.type}='tried'    THEN 1 ELSE 0 END),0)`,
     })
-    .from(collections)
-    .where(eq(collections.userId, userId));
+    .from(collectionsItems)
+    .where(eq(collectionsItems.userId, userId));
   const [counts = { wishlist: 0, owned: 0, tried: 0 }] = rows;
 
   const defaultcollections = [

@@ -1,6 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
+import { Description } from "@radix-ui/react-dialog";
 import { index, pgTableCreator, unique } from "drizzle-orm/pg-core";
 import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
@@ -12,59 +13,52 @@ import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
  */
 export const createTable = pgTableCreator((name) => `fragrance-webapp_${name}`);
 
-export const fragrances = pgTable(
-  "fragrances",
-  {
-    id: serial("id").primaryKey(),
-    name: text("name").notNull(),
-    url: text("url").notNull(),
-    notes: text("notes").default("No Notes"),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .defaultNow()
-      .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date(),
-    ),
-  },
-  (table) => {
-    return {
-      nameIdx: index("name_idx").on(table.name),
-    };
-  },
-);
-export const usersTable = pgTable("users", {
+export const fragrances = pgTable("fragrances", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  url: text("url").notNull(),
+  notes: text("notes").default("No Notes"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+    () => new Date(),
+  ),
+});
+export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
 });
+export const collectionsItems = pgTable("collectionsItems", {
+  id: serial("id").primaryKey(),
+  fragranceId: integer("fragranceId")
+    .notNull()
+    .references(() => fragrances.id, { onDelete: "cascade" }),
+  collections: integer("collections")
+    .notNull()
+    .references(() => collections.id, { onDelete: "cascade" }),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+});
+
 export const collections = pgTable(
-  "userLists",
+  "collections",
   {
     id: serial("id").primaryKey(),
-    type: text("type").notNull(),
-    fragranceId: integer("fragranceId").notNull(),
-    notes: text("notes"),
+    name: text("name").notNull(),
+    description: text("description"),
     userId: integer("userId")
       .notNull()
-      .references(() => usersTable.id, { onDelete: "cascade" }),
-    createdAt: timestamp("createdAt").notNull().defaultNow(),
-    updatedAt: timestamp("updatedAt")
-      .notNull()
-      .$onUpdate(() => new Date()),
+      .references(() => users.id, { onDelete: "cascade" }),
+    privacy: text("privacy"),
   },
   (table) => ({
-    uniqueConstraints: [
-      unique("user_fragrance_type_unique").on(
-        table.userId,
-        table.fragranceId,
-        table.type,
-      ),
-    ],
+    uniqueConstraints: unique("unique").on(table.userId, table.name),
   }),
 );
 
-export type InsertUser = typeof usersTable.$inferInsert;
-export type SelectUser = typeof usersTable.$inferSelect;
+export type InsertUser = typeof users.$inferInsert;
+export type SelectUser = typeof users.$inferSelect;
 
-export type InsertList = typeof collections.$inferInsert;
-export type SelectList = typeof collections.$inferSelect;
+export type InsertList = typeof collectionsItems.$inferInsert;
+export type SelectList = typeof collectionsItems.$inferSelect;

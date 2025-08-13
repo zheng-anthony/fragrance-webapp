@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { db } from "@/server/db";
-import { collections } from "~/server/db/schema";
+import { collectionsItems } from "~/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
 
-type userlists = typeof collections.$inferSelect;
+type collectionsItems = typeof collectionsItems.$inferSelect;
 
 export const dynamic = "force-dynamic";
 
@@ -24,17 +24,17 @@ export async function POST(req: Request) {
 
   const { type, fragranceId, notes } = body;
 
-  const existing: userlists | undefined = await db.query.userLists.findFirst({
-    where: (userlist, { eq, and }) =>
-      and(
-        eq(userlist.userId, userId),
-        eq(userlist.fragranceId, fragranceId),
-        eq(userlist.type, type),
-      ),
-  });
+  const existing: collectionsItems | undefined =
+    await db.query.collections.findFirst({
+      where: (collectionsItems, { eq, and }) =>
+        and(
+          eq(collectionsItems.userId, userId),
+          eq(collectionsItems.fragranceId, fragranceId),
+        ),
+    });
   if (existing) {
     await db
-      .update(collections)
+      .update(collectionsItems)
       .set({
         type,
         notes,
@@ -42,9 +42,9 @@ export async function POST(req: Request) {
       })
       .where(
         and(
-          eq(collections.userId, userId),
-          eq(collections.fragranceId, fragranceId),
-          eq(collections.type, type),
+          eq(collectionsItems.userId, userId),
+          eq(collectionsItems.fragranceId, fragranceId),
+          eq(collectionsItems.type, type),
         ),
       );
     return NextResponse.json(
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       { status: 200 },
     );
   } else {
-    await db.insert(collections).values({
+    await db.insert(collectionsItems).values({
       userId,
       fragranceId,
       type,
@@ -78,12 +78,12 @@ export async function DELETE(req: Request) {
   const { id, type } = body;
 
   await db
-    .delete(collections)
+    .delete(collectionsItems)
     .where(
       and(
-        eq(collections.userId, userId),
-        eq(collections.fragranceId, id),
-        eq(collections.type, type),
+        eq(collectionsItems.userId, userId),
+        eq(collectionsItems.fragranceId, id),
+        eq(collectionsItems.type, type),
       ),
     );
 

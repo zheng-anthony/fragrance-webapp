@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import { db } from "@/server/db";
 import { eq } from "drizzle-orm";
-import { collections } from "@/server/db/schema";
+import { collectionsItems } from "@/server/db/schema";
 import { fragrances } from "@/server/db/schema";
 import { UserCard } from "~/components/cologne-card/cologne-cards";
 
@@ -20,9 +20,9 @@ export const dynamic = "force-dynamic";
 export default async function OwnedPage() {
   const owned = await db
     .select()
-    .from(collections)
-    .innerJoin(fragrances, eq(collections.fragranceId, fragrances.id))
-    .where(eq(collections.type, "owned"));
+    .from(collectionsItems)
+    .innerJoin(fragrances, eq(collectionsItems.fragranceId, fragrances.id))
+    .where(eq(collectionsItems.type, "owned"));
 
   return (
     <div className="bg-background min-h-screen">

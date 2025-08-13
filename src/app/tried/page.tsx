@@ -9,19 +9,33 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { db } from "@/server/db";
-import { eq } from "drizzle-orm";
-import { fragrances } from "@/server/db/schema";
-import { collections } from "@/server/db/schema";
+import { eq, and } from "drizzle-orm";
+import { collections, fragrances } from "@/server/db/schema";
+import { collectionsItems } from "@/server/db/schema";
 import { UserCard } from "~/components/cologne-card/cologne-cards";
+import { getServerSession } from "next-auth";
+import { authOptions } from "~/server/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function TriedPage() {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return;
+  }
+
   const tried = await db
     .select()
-    .from(collections)
-    .innerJoin(fragrances, eq(collections.fragranceId, fragrances.id))
-    .where(eq(collections.type, "tried"));
+    .from(collectionsItems)
+    .innerJoin(collections, eq(collectionsItems.collections, collections.id))
+    .innerJoin(fragrances, eq(collectionsItems.fragranceId, fragrances.id))
+    .where(
+      and(
+        eq(collections.name, "tried"),
+        eq(collections.userId, session.user.id),
+      ),
+    );
 
   return (
     <div className="bg-background min-h-screen">
