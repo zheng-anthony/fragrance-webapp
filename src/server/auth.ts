@@ -14,7 +14,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user }): Promise<boolean> {
       if (!user.email) return false;
-      const email = user.email as string;
+      const email = user.email;
 
       // 1) find or create user
       const existingUser = await db.query.users.findFirst({
@@ -67,7 +67,7 @@ export const authOptions: NextAuthOptions = {
 
     async session({ session }): Promise<DefaultSession> {
       if (session.user?.email) {
-        const email = session.user.email as string;
+        const email = session.user.email;
         const userRow = await db.query.users.findFirst({
           where: eq(users.email, email),
         });

@@ -30,31 +30,31 @@ export default async function CollectionsPage() {
   if (!session?.user?.id) {
     throw new Error("Not signed in");
   }
-  const userId = Number(session?.user.id);
+  // const userId = Number(session?.user.id);
 
-  const defaultcollections = [
-    {
-      id: "wishlist",
-      name: "wishlist",
-      count: counts.wishlist,
-      description: "Fragrances you own",
-      icon: "heart",
-    },
-    {
-      id: "owned",
-      name: "owned",
-      count: counts.owned,
-      description: "Want to try",
-      icon: "check",
-    },
-    {
-      id: "tried",
-      name: "tried",
-      count: counts.tried,
-      description: "Tested fragrances",
-      icon: "eye",
-    },
-  ];
+  // const defaultcollections = [
+  //   {
+  //     id: "wishlist",
+  //     name: "wishlist",
+  //     count: counts.wishlist,
+  //     description: "Fragrances you own",
+  //     icon: "heart",
+  //   },
+  //   {
+  //     id: "owned",
+  //     name: "owned",
+  //     count: counts.owned,
+  //     description: "Want to try",
+  //     icon: "check",
+  //   },
+  //   {
+  //     id: "tried",
+  //     name: "tried",
+  //     count: counts.tried,
+  //     description: "Tested fragrances",
+  //     icon: "eye",
+  //   },
+  // ];
   // Custom collections
   const customCollections = [
     {
@@ -142,7 +142,7 @@ export default async function CollectionsPage() {
             </div>
           </CardContent>
         </Card>
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <h2 className="mb-4 text-xl font-semibold">Default Collections</h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {defaultcollections.map((collection) => (
@@ -155,7 +155,7 @@ export default async function CollectionsPage() {
               />
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Custom Collections */}
         <div>

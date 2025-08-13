@@ -23,10 +23,12 @@ export default async function WishlistPage() {
   const wishlist = await db
     .select()
     .from(collections)
+    // Looking inside db table "collectionItems". adding collectionsItems that are inside the specific collection
     .innerJoin(
       collectionsItems,
       eq(collectionsItems.collectionsId, collections.id),
     )
+    // looking inside db table "fragrances". adding fragrances that
     .innerJoin(fragrances, eq(collectionsItems.fragranceId, fragrances.id))
     .where(
       and(
