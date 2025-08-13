@@ -35,7 +35,7 @@ export const collectionsItems = pgTable("collectionsItems", {
   fragranceId: integer("fragranceId")
     .notNull()
     .references(() => fragrances.id, { onDelete: "cascade" }),
-  collections: integer("collections")
+  collectionsId: integer("collectionsId")
     .notNull()
     .references(() => collections.id, { onDelete: "cascade" }),
   createdAt: timestamp("createdAt").notNull().defaultNow(),

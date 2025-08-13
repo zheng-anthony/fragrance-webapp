@@ -35,24 +35,6 @@ export function CatalogCard({
   const { data: session } = useSession();
   const router = useRouter();
   const go = () => router.push(`/fragrances/${fragrance.id}`);
-  const handleAdd = async (type: "wishlist" | "owned" | "tried") => {
-    if (!session?.user.id) {
-      await signIn();
-      return;
-    }
-    await fetch("/api/userlists/", {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({
-        userId: session?.user.id,
-        fragranceId: fragrance.id,
-        type,
-        notes: "none",
-        fragrance_name: fragrance.name,
-      }),
-    });
-    router.refresh();
-  };
 
   return (
     <Card
@@ -79,7 +61,6 @@ export function CatalogCard({
             variant="outline"
             className="h-6 flex-1 bg-transparent px-1 text-xs hover:border-red-200 hover:bg-red-50 hover:text-red-600"
             title="Add to Wishlist"
-            onClick={() => handleAdd("wishlist")}
           >
             <Heart className="h-3 w-3" />
           </Button>
@@ -88,7 +69,6 @@ export function CatalogCard({
             variant="outline"
             className="h-6 flex-1 bg-transparent px-1 text-xs hover:border-green-200 hover:bg-green-50 hover:text-green-600"
             title="Mark as Owned"
-            onClick={() => handleAdd("owned")}
           >
             <Check className="h-3 w-3" />
           </Button>
@@ -97,7 +77,6 @@ export function CatalogCard({
             variant="outline"
             className="h-6 flex-1 bg-transparent px-1 text-xs hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
             title="Mark as Tried"
-            onClick={() => handleAdd("tried")}
           >
             <Eye className="h-3 w-3" />
           </Button>
