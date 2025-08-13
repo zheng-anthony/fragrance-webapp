@@ -107,10 +107,10 @@ export function CatalogCard({
 
 export function UserCard({
   variant,
-  userLists,
+  collections,
 }: {
   variant: string;
-  userLists: {
+  collections: {
     id: number;
     url: string;
     name: string;
@@ -124,34 +124,34 @@ export function UserCard({
       {/* wishlist */}
       {variant === "wishlist" && (
         <Card
-          key={userLists.id}
+          key={collections.id}
           className="cursor-pointer transition-shadow hover:shadow-lg"
         >
           <CardContent className="p-4">
             <div className="relative mb-4 aspect-[3/4]">
               <Image
-                src={userLists.url || "/placeholder.svg"}
-                alt={userLists.name}
+                src={collections.url || "/placeholder.svg"}
+                alt={collections.name}
                 fill
                 className="rounded-md object-cover"
               />
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold">{userLists.name}</h3>
+              <h3 className="text-lg font-semibold">{collections.name}</h3>
 
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Added:</span>
                   <span>
-                    {new Date(userLists.createdAt).toLocaleDateString()}
+                    {new Date(collections.createdAt).toLocaleDateString()}
                   </span>
                 </div>
               </div>
 
-              {userLists && (
+              {collections && (
                 <div className="bg-muted mt-3 rounded-md p-2">
-                  <p className="text-sm italic">{userLists.notes}</p>
+                  <p className="text-sm italic">{collections.notes}</p>
                 </div>
               )}
 
@@ -203,25 +203,25 @@ export function UserCard({
       {/* tried */}
       {variant === "tried" && (
         <Card
-          key={userLists.id}
+          key={collections.id}
           className="cursor-pointer transition-shadow hover:shadow-lg"
         >
           <CardContent className="p-4">
             <div className="relative mb-4 aspect-[3/4]">
               <Image
-                src={userLists.url || "/placeholder.svg"}
-                alt={userLists.name}
+                src={collections.url || "/placeholder.svg"}
+                alt={collections.name}
                 fill
                 className="rounded-md object-cover"
               />
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold">{userLists.name}</h3>
+              <h3 className="text-lg font-semibold">{collections.name}</h3>
 
-              {userLists.notes && (
+              {collections.notes && (
                 <div className="bg-muted mt-3 rounded-md p-2">
-                  <p className="text-sm italic">{userLists.notes}</p>
+                  <p className="text-sm italic">{collections.notes}</p>
                 </div>
               )}
 
@@ -282,27 +282,27 @@ export function UserCard({
       {/* owned */}
       {variant === "owned" && (
         <Card
-          key={userLists.id}
+          key={collections.id}
           className="cursor-pointer transition-shadow hover:shadow-lg"
         >
           <div className="relative aspect-[3/4]">
             <Image
-              src={userLists.url}
-              alt={userLists.name}
+              src={collections.url}
+              alt={collections.name}
               fill
               className="rounded-md object-cover"
             />
           </div>
           <CardContent className="p-4">
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold">{userLists.name}</h3>
+              <h3 className="text-lg font-semibold">{collections.name}</h3>
 
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Added:</span>
                   <span>
                     Added:{" "}
-                    {new Date(userLists.createdAt).toLocaleDateString()}{" "}
+                    {new Date(collections.createdAt).toLocaleDateString()}{" "}
                   </span>
                 </div>
               </div>

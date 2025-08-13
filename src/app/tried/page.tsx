@@ -20,19 +20,21 @@ export const dynamic = "force-dynamic";
 
 export default async function TriedPage() {
   const session = await getServerSession(authOptions);
-
   if (!session) {
     return;
   }
 
   const tried = await db
     .select()
-    .from(collectionsItems)
-    .innerJoin(collections, eq(collectionsItems.collections, collections.id))
+    .from(collections)
+    .innerJoin(
+      collectionsItems,
+      eq(collectionsItems.collectionsId, collections.id),
+    )
     .innerJoin(fragrances, eq(collectionsItems.fragranceId, fragrances.id))
     .where(
       and(
-        eq(collections.name, "tried"),
+        eq(collections.name, "Tried"),
         eq(collections.userId, session.user.id),
       ),
     );
@@ -107,7 +109,7 @@ export default async function TriedPage() {
           {tried.map((f) => (
             <UserCard
               key={f.fragrances.id}
-              userLists={f.fragrances}
+              collections={f.fragrances}
               variant="tried"
             />
           ))}

@@ -10,19 +10,34 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { db } from "@/server/db";
-import { eq } from "drizzle-orm";
-import { collectionsItems } from "@/server/db/schema";
+import { eq, and } from "drizzle-orm";
+import { collections, collectionsItems } from "@/server/db/schema";
 import { fragrances } from "@/server/db/schema";
 import { UserCard } from "~/components/cologne-card/cologne-cards";
+import { getServerSession } from "next-auth";
+import { authOptions } from "~/server/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function OwnedPage() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return;
+  }
   const owned = await db
     .select()
-    .from(collectionsItems)
+    .from(collections)
+    .innerJoin(
+      collectionsItems,
+      eq(collectionsItems.collectionsId, collections.id),
+    )
     .innerJoin(fragrances, eq(collectionsItems.fragranceId, fragrances.id))
-    .where(eq(collectionsItems.type, "owned"));
+    .where(
+      and(
+        eq(collections.name, "Owned"),
+        eq(collections.userId, session?.user.id),
+      ),
+    );
 
   return (
     <div className="bg-background min-h-screen">
@@ -95,7 +110,7 @@ export default async function OwnedPage() {
           {owned.map((f) => (
             <UserCard
               key={f.fragrances.id}
-              userLists={f.fragrances}
+              collections={f.fragrances}
               variant="owned"
             />
           ))}
