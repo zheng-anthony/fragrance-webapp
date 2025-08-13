@@ -18,7 +18,7 @@ async function Sidebar({ session }: { session: Session }) {
   const wishlist = await db
     .select()
     .from(collectionsItems)
-    .innerJoin(collections, eq(collectionsItems.collections, collections.id))
+    .innerJoin(collections, eq(collectionsItems.collectionsId, collections.id))
     .where(
       and(
         eq(collections.name, "wishlist"),
@@ -29,7 +29,7 @@ async function Sidebar({ session }: { session: Session }) {
   const owned = await db
     .select()
     .from(collectionsItems)
-    .innerJoin(collections, eq(collectionsItems.collections, collections.id))
+    .innerJoin(collections, eq(collectionsItems.collectionsId, collections.id))
     .where(
       and(
         eq(collections.name, "owned"),
@@ -40,7 +40,7 @@ async function Sidebar({ session }: { session: Session }) {
   const tried = await db
     .select()
     .from(collectionsItems)
-    .innerJoin(collections, eq(collectionsItems.collections, collections.id))
+    .innerJoin(collections, eq(collectionsItems.collectionsId, collections.id))
     .where(
       and(
         eq(collections.name, "tried"),
