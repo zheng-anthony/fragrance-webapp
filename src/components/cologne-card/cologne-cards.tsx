@@ -10,7 +10,6 @@ import {
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
-import { signIn, useSession } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +17,8 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { useRouter } from "next/navigation";
+import { handleAddDefaultCollections } from "~/actions/collectionItems";
+import { DefaultCollections } from "~/types/types";
 
 export const dynamic = "force-dynamic";
 
@@ -32,7 +33,6 @@ export function CatalogCard({
     updatedAt: Date | null;
   };
 }) {
-  const { data: session } = useSession();
   const router = useRouter();
   const go = () => router.push(`/fragrances/${fragrance.id}`);
 
@@ -61,6 +61,12 @@ export function CatalogCard({
             variant="outline"
             className="h-6 flex-1 bg-transparent px-1 text-xs hover:border-red-200 hover:bg-red-50 hover:text-red-600"
             title="Add to Wishlist"
+            onClick={() => {
+              void handleAddDefaultCollections(
+                fragrance.id,
+                DefaultCollections.Wishlist,
+              );
+            }}
           >
             <Heart className="h-3 w-3" />
           </Button>
@@ -69,6 +75,12 @@ export function CatalogCard({
             variant="outline"
             className="h-6 flex-1 bg-transparent px-1 text-xs hover:border-green-200 hover:bg-green-50 hover:text-green-600"
             title="Mark as Owned"
+            onClick={() => {
+              void handleAddDefaultCollections(
+                fragrance.id,
+                DefaultCollections.Owned,
+              );
+            }}
           >
             <Check className="h-3 w-3" />
           </Button>
@@ -77,6 +89,12 @@ export function CatalogCard({
             variant="outline"
             className="h-6 flex-1 bg-transparent px-1 text-xs hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
             title="Mark as Tried"
+            onClick={() => {
+              void handleAddDefaultCollections(
+                fragrance.id,
+                DefaultCollections.Tried,
+              );
+            }}
           >
             <Eye className="h-3 w-3" />
           </Button>
@@ -101,30 +119,6 @@ export function UserCard({
     notes: string | null;
   };
 }) {
-  const { id, url, name, createdAt, updatedAt } = userLists;
-
-  const { data: session } = useSession();
-
-  const router = useRouter();
-
-  const handleDelete = async (type: "wishlist" | "owned" | "tried") => {
-    if (!session?.user.id) {
-      await signIn();
-      return;
-    }
-
-    await fetch("/api/userlists/", {
-      method: "DELETE",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({
-        userId: session?.user.id,
-        id,
-        type,
-      }),
-    });
-    router.refresh();
-  };
-
   return (
     <>
       {/* wishlist */}
@@ -195,10 +189,7 @@ export function UserCard({
                       <DropdownMenuItem className="text-orange-600">
                         Change Priority
                       </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => handleDelete("wishlist")}
-                        className="text-red-600"
-                      >
+                      <DropdownMenuItem className="text-red-600">
                         Remove from Wishlist
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -277,10 +268,7 @@ export function UserCard({
                       <DropdownMenuItem className="text-orange-600">
                         Change Verdict
                       </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => handleDelete("tried")}
-                        className="text-red-600"
-                      >
+                      <DropdownMenuItem className="text-red-600">
                         Remove from Tried
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -349,10 +337,7 @@ export function UserCard({
                     <DropdownMenuItem className="text-orange-400">
                       Change Verdict
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => handleDelete("owned")}
-                      className="text-red-600"
-                    >
+                    <DropdownMenuItem className="text-red-600">
                       Remove from Owned
                     </DropdownMenuItem>
                   </DropdownMenuContent>
