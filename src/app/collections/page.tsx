@@ -32,16 +32,6 @@ export default async function CollectionsPage() {
   }
   const userId = Number(session?.user.id);
 
-  const rows = await db
-    .select({
-      wishlist: sql<number>`COALESCE(SUM(CASE WHEN ${collectionsItems.type}='wishlist' THEN 1 ELSE 0 END),0)`,
-      owned: sql<number>`COALESCE(SUM(CASE WHEN ${collectionsItems.type}='owned'    THEN 1 ELSE 0 END),0)`,
-      tried: sql<number>`COALESCE(SUM(CASE WHEN ${collectionsItems.type}='tried'    THEN 1 ELSE 0 END),0)`,
-    })
-    .from(collectionsItems)
-    .where(eq(collectionsItems.userId, userId));
-  const [counts = { wishlist: 0, owned: 0, tried: 0 }] = rows;
-
   const defaultcollections = [
     {
       id: "wishlist",

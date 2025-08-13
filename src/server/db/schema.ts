@@ -1,8 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { Description } from "@radix-ui/react-dialog";
-import { index, pgTableCreator, unique } from "drizzle-orm/pg-core";
+import { pgTableCreator, unique } from "drizzle-orm/pg-core";
 import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 /**

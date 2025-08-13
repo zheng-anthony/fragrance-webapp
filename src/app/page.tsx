@@ -14,6 +14,41 @@ import { eq, and } from "drizzle-orm";
 import { getServerSession, type Session } from "next-auth";
 import { authOptions } from "~/server/auth";
 
+export default async function Homepage() {
+  const session = await getServerSession(authOptions);
+
+  const fragrances = await db.query.fragrances.findMany();
+
+  return (
+    <div className="bg-background min-h-screen">
+      <div className="container mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
+          {session && <Sidebar session={session} />}
+          {/* Main Content */}
+          <div className="space-y-6 lg:col-span-3">
+            {/* Most Popular Section */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5" />
+                  Most Popular
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                  {fragrances.map((f) => (
+                    <CatalogCard key={f.id} fragrance={f} />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 async function Sidebar({ session }: { session: Session }) {
   const wishlist = await db
     .select()
@@ -80,41 +115,6 @@ async function Sidebar({ session }: { session: Session }) {
           <Addcollection />
         </CardContent>
       </Card>
-    </div>
-  );
-}
-
-export default async function Homepage() {
-  const session = await getServerSession(authOptions);
-
-  const fragrances = await db.query.fragrances.findMany();
-
-  return (
-    <div className="bg-background min-h-screen">
-      <div className="container mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
-          {session && <Sidebar session={session} />}
-          {/* Main Content */}
-          <div className="space-y-6 lg:col-span-3">
-            {/* Most Popular Section */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  Most Popular
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                  {fragrances.map((f) => (
-                    <CatalogCard key={f.id} fragrance={f} />
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
