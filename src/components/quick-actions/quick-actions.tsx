@@ -78,17 +78,17 @@ export function Viewwishlist() {
   );
 }
 
-export function Addcollection() {
-  const collection = useRouter();
+export function UserCollections() {
+  const router = useRouter();
 
-  const handleAdd = () => {
-    collection.push("/add-to-collection");
+  const handleCollections = () => {
+    router.push("/userCollections");
   };
   return (
     <Button
       className="w-full justify-start bg-transparent"
       variant="outline"
-      onClick={handleAdd}
+      onClick={handleCollections}
     >
       <Plus className="mr-2 h-4 w-4" />
       My Collections

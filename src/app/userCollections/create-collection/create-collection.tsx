@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { addCollection } from "~/actions/create-collection";
 
 export default function CreateCollectionButton() {
   const [name, setName] = useState("");
@@ -33,21 +34,12 @@ export default function CreateCollectionButton() {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const createCollection = async () => {
+  const createCollection = async (e: React.FormEvent) => {
     if (!session?.user.id) {
       await signIn();
       return;
     }
-    await fetch("/api/collections", {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({
-        collection_name: name,
-        userId: session?.user.id,
-        collection_description: description,
-        collection_privacy: privacy,
-      }),
-    });
+    await addCollection(name, description, privacy, session?.user.id!);
     router.refresh();
   };
 

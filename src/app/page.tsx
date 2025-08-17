@@ -4,7 +4,7 @@ import { TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CatalogCard } from "~/components/cologne-card/cologne-cards";
 import {
-  Addcollection,
+  UserCollections,
   Viewowned,
   Viewtried,
   Viewwishlist,
@@ -112,7 +112,7 @@ async function Sidebar({ session }: { session: Session }) {
           <Viewowned />
           <Viewtried />
           <Viewwishlist />
-          <Addcollection />
+          <UserCollections />
         </CardContent>
       </Card>
     </div>
