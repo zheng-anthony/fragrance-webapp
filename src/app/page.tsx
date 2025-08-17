@@ -56,7 +56,7 @@ async function Sidebar({ session }: { session: Session }) {
     .innerJoin(collections, eq(collectionsItems.collectionsId, collections.id))
     .where(
       and(
-        eq(collections.name, "wishlist"),
+        eq(collections.name, "Wishlist"),
         eq(collections.userId, session.user.id),
       ),
     );
@@ -67,7 +67,7 @@ async function Sidebar({ session }: { session: Session }) {
     .innerJoin(collections, eq(collectionsItems.collectionsId, collections.id))
     .where(
       and(
-        eq(collections.name, "owned"),
+        eq(collections.name, "Owned"),
         eq(collections.userId, session.user.id),
       ),
     );
@@ -78,7 +78,7 @@ async function Sidebar({ session }: { session: Session }) {
     .innerJoin(collections, eq(collectionsItems.collectionsId, collections.id))
     .where(
       and(
-        eq(collections.name, "tried"),
+        eq(collections.name, "Tried"),
         eq(collections.userId, session.user.id),
       ),
     );
