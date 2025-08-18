@@ -31,12 +31,11 @@ export function BrowseButton() {
     </Button>
   );
 }
-export function CollectionsButton() {
-  const collections = useRouter();
+export function BrowseCollections() {
+  const router = useRouter();
 
   const handleCollections = () => {
-    collections.push("/collections");
-    console.log("collections");
+    router.push("/browseCollections");
   };
   return (
     <Button variant="ghost" className="text-sm" onClick={handleCollections}>

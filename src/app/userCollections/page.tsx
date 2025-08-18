@@ -20,7 +20,7 @@ import {
 import { db } from "@/server/db";
 import { eq, sql } from "drizzle-orm";
 import { collectionsItems } from "~/server/db/schema";
-import CreateCollectionButton from "~/app/collections/create-collection/create-collection";
+import CreateCollectionButton from "./create-collection/create-collection"
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
 import { DefaultCard } from "./collection-card/collection-card";

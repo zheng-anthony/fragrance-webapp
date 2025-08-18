@@ -9,8 +9,8 @@ import { Input } from "@/components/ui/input";
 import {
   HomeButton,
   BrowseButton,
-  CollectionsButton,
   ProfileButton,
+  BrowseCollections,
 } from "@/components/topnav/topnav";
 import SessionWrapper from "~/components/sessionwrapper/sessionwrapper";
 
@@ -39,7 +39,7 @@ export default function RootLayout({
                   <nav className="hidden items-center gap-6 md:flex">
                     <HomeButton />
                     <BrowseButton />
-                    <CollectionsButton />
+                    <BrowseCollections/>
                   </nav>
                 </div>
                 <div className="flex items-center gap-4">
