@@ -35,11 +35,12 @@ export default function CreateCollectionButton() {
   const router = useRouter();
 
   const createCollection = async (e: React.FormEvent) => {
-    if (!session?.user.id) {
-      await signIn();
-      return;
-    }
-    await addCollection(name, description, privacy, session?.user.id!);
+
+    const userId = session?.user.id
+
+    if (!userId) {await signIn(); return}
+
+    await addCollection(name, description, privacy, userId)
     router.refresh();
   };
 
