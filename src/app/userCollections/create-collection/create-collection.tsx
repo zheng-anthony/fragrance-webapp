@@ -34,6 +34,13 @@ export default function CreateCollectionButton() {
   const { data: session } = useSession();
   const router = useRouter();
 
+const setDefault = () => {
+  setName("")
+  setDescription("")
+  setPrivacy("public")
+  setisOpen(false)
+}
+  
   const createCollection = async (e: React.FormEvent) => {
 
     const userId = session?.user.id
@@ -41,11 +48,18 @@ export default function CreateCollectionButton() {
     if (!userId) {await signIn(); return}
 
     await addCollection(name, description, privacy, userId)
+    setDefault()
+
     router.refresh();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setisOpen}>
+    <Dialog open={isOpen} onOpenChange={(open) => {
+      setisOpen(open)
+      if (!open) {
+        setDefault()
+      }
+    }}>
       <DialogTrigger asChild>
         <Button className="gap-2">
           <Plus className="h-4 w-4" />
@@ -94,10 +108,12 @@ export default function CreateCollectionButton() {
           </div>
         </div>
         <div className="flex justify-end gap-2">
-          <Button variant="outline" onClick={() => setisOpen(false)}>
+          <Button variant="outline" onClick={setDefault}>
             Cancel
           </Button>
-          <Button onClick={createCollection} disabled={!name.trim()}>
+          <Button onClick={createCollection
+          }
+           disabled={!name.trim()}>
             Create Collection
           </Button>
         </div>
