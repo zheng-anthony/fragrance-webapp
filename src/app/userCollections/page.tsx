@@ -18,19 +18,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { db } from "@/server/db";
-import { eq, sql, and } from "drizzle-orm";
+import { eq, sql, and, notInArray } from "drizzle-orm";
 import { collections, collectionsItems } from "~/server/db/schema";
 import CreateCollectionButton from "./create-collection/create-collection"
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
 import { DefaultCard } from "./collection-card/collection-card";
+import { custom } from "zod";
 
 export default async function CollectionsPage() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
     throw new Error("Not signed in");
   }
-  const userId = Number(session?.user.id);
   const wishlist = await db
     .select()
     .from(collectionsItems)
@@ -88,39 +88,27 @@ export default async function CollectionsPage() {
     },
   ];
   // Custom collections
-  const customCollections = [
-    {
-      id: "summer-favorites",
-      name: "Summer Favorites",
-      description: "Fresh and light fragrances perfect for hot weather",
-      count: 12,
-      privacy: "public",
-      lastUpdated: "2024-01-15",
-      followers: 45,
-      tags: ["Summer", "Fresh", "Citrus"],
-    },
-    {
-      id: "date-night",
-      name: "Date Night Essentials",
-      description: "Romantic and seductive fragrances for special occasions",
-      count: 8,
-      privacy: "public",
-      lastUpdated: "2024-01-12",
-      followers: 23,
-      tags: ["Romantic", "Evening", "Seductive"],
-    },
-    {
-      id: "office-appropriate",
-      name: "Office Appropriate",
-      description: "Professional and subtle scents for work",
-      count: 15,
-      privacy: "private",
-      lastUpdated: "2024-01-10",
-      followers: 0,
-      tags: ["Professional", "Subtle", "Work"],
-    },
-  ];
 
+  type customCollections = {
+  collections: {
+    id: number;
+    name: string 
+    description: string | null;
+    userId: number;
+    privacy: string | null;
+  };
+  collectionsItems: {
+    id: number | null;          // can be null
+    fragranceId: number | null; // can be null
+    collectionsId: number | null;
+    createdAt: Date | null;
+  } | null;                     
+};
+  const customCollections = await db.select().from(collectionsItems).leftJoin(collections, eq(collections.id, collectionsItems.collectionsId)).where(notInArray(collections.name, ["Wishlist", "Owned", "Tried"]))
+
+  console.log(customCollections)
+const names = await db.select({ name: collections.name }).from(collections);
+console.log(names);
   return (
     <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 py-6">
@@ -194,27 +182,28 @@ export default async function CollectionsPage() {
           <h2 className="mb-4 text-xl font-semibold">Custom Collections</h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {customCollections.map((collection) => (
+              collection.collections && collection.collections.name === "Wishlist" || collection.collections && collection.collections.name === "Owned" || collection.collections && collection.collections.name === "Tried" ? (
               <Card
-                key={collection.id}
+                key={collection.collections.id}
                 className="cursor-pointer transition-shadow hover:shadow-md"
               >
                 <CardContent className="p-4">
                   <div className="mb-3 flex items-start justify-between">
                     <div className="flex-1">
                       <div className="mb-1 flex items-center gap-2">
-                        <h3 className="font-semibold">{collection.name}</h3>
+                        <h3 className="font-semibold">{collection.collections.name}</h3>
                         <Badge
                           variant={
-                            collection.privacy === "public"
+                            collection.collections.privacy === "public"
                               ? "default"
                               : "secondary"
                           }
                         >
-                          {collection.privacy}
+                          {collection.collections.privacy}
                         </Badge>
                       </div>
                       <p className="text-muted-foreground mb-2 text-sm">
-                        {collection.description}
+                        {collection.collections.description}
                       </p>
                     </div>
                     <DropdownMenu>
@@ -237,31 +226,18 @@ export default async function CollectionsPage() {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
-
-                  <div className="mb-3 flex flex-wrap gap-1">
-                    {collection.tags.map((tag, index) => (
-                      <Badge key={index} variant="outline" className="text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-
                   <div className="text-muted-foreground flex items-center justify-between text-sm">
-                    <span>{collection.count} items</span>
-                    {collection.privacy === "public" && (
+                    <span>{} items</span>
+                    {collection.collections.privacy === "public" && ( 
                       <div className="flex items-center gap-1">
                         <Users className="h-3 w-3" />
-                        <span>{collection.followers} followers</span>
                       </div>
                     )}
                   </div>
-                  <div className="text-muted-foreground mt-1 text-xs">
-                    Updated{" "}
-                    {new Date(collection.lastUpdated).toLocaleDateString()}
-                  </div>
                 </CardContent>
               </Card>
-            ))}
+                
+              ) : null))}
           </div>
         </div>
 
