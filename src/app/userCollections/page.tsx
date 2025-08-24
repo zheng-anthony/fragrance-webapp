@@ -98,17 +98,15 @@ export default async function CollectionsPage() {
     privacy: string | null;
   };
   collectionsItems: {
-    id: number | null;          // can be null
-    fragranceId: number | null; // can be null
+    id: number | null;    
+    fragranceId: number | null; 
     collectionsId: number | null;
     createdAt: Date | null;
   } | null;                     
 };
-  const customCollections = await db.select().from(collectionsItems).leftJoin(collections, eq(collections.id, collectionsItems.collectionsId)).where(notInArray(collections.name, ["Wishlist", "Owned", "Tried"]))
-
+  const customCollections = await db.select().from(collections).leftJoin(collectionsItems, eq(collections.id, collectionsItems.collectionsId)).where(notInArray(collections.name, ["Wishlist", "Owned", "Tried"]))
   console.log(customCollections)
-const names = await db.select({ name: collections.name }).from(collections);
-console.log(names);
+
   return (
     <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 py-6">
@@ -182,7 +180,7 @@ console.log(names);
           <h2 className="mb-4 text-xl font-semibold">Custom Collections</h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {customCollections.map((collection) => (
-              collection.collections && collection.collections.name === "Wishlist" || collection.collections && collection.collections.name === "Owned" || collection.collections && collection.collections.name === "Tried" ? (
+              collection.collections ? (
               <Card
                 key={collection.collections.id}
                 className="cursor-pointer transition-shadow hover:shadow-md"
