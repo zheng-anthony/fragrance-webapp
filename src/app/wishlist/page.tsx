@@ -91,7 +91,7 @@ export default async function WishlistPage() {
           {wishlist.map((f) => (
             <UserCard
               key={f.fragrances.id}
-              collections={f.fragrances}
+              fragrance={f.fragrances}
               variant="wishlist"
             />
           ))}

@@ -110,7 +110,7 @@ export default async function OwnedPage() {
           {owned.map((f) => (
             <UserCard
               key={f.fragrances.id}
-              collections={f.fragrances}
+              fragrance={f.fragrances}
               variant="owned"
             />
           ))}

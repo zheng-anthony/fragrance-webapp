@@ -109,7 +109,7 @@ export default async function TriedPage() {
           {tried.map((f) => (
             <UserCard
               key={f.fragrances.id}
-              collections={f.fragrances}
+              fragrance={f.fragrances}
               variant="tried"
             />
           ))}

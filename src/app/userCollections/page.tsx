@@ -105,7 +105,6 @@ export default async function CollectionsPage() {
   } | null;                     
 };
   const customCollections = await db.select().from(collections).leftJoin(collectionsItems, eq(collections.id, collectionsItems.collectionsId)).where(notInArray(collections.name, ["Wishlist", "Owned", "Tried"]))
-  console.log(customCollections)
 
   return (
     <div className="bg-background min-h-screen">

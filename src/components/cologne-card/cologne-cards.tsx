@@ -105,12 +105,14 @@ export function CatalogCard({
   );
 }
 
+
+
 export function UserCard({
   variant,
-  collections,
+  fragrance: fragrance,
 }: {
   variant: string;
-  collections: {
+  fragrance: {
     id: number;
     url: string;
     name: string;
@@ -119,39 +121,42 @@ export function UserCard({
     notes: string | null;
   };
 }) {
+const router = useRouter();
+const go = () => router.push(`/fragrances/${fragrance.id}`);
   return (
     <>
       {/* wishlist */}
       {variant === "wishlist" && (
         <Card
-          key={collections.id}
+          key={fragrance.id}
           className="cursor-pointer transition-shadow hover:shadow-lg"
         >
           <CardContent className="p-4">
             <div className="relative mb-4 aspect-[3/4]">
               <Image
-                src={collections.url || "/placeholder.svg"}
-                alt={collections.name}
+                src={fragrance.url || "/placeholder.svg"}
+                alt={fragrance.name}
                 fill
                 className="rounded-md object-cover"
+                onClick={go}
               />
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold">{collections.name}</h3>
+              <h3 className="text-lg font-semibold">{fragrance.name}</h3>
 
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Added:</span>
                   <span>
-                    {new Date(collections.createdAt).toLocaleDateString()}
+                    {new Date(fragrance.createdAt).toLocaleDateString()}
                   </span>
                 </div>
               </div>
 
-              {collections && (
+              {fragrance && (
                 <div className="bg-muted mt-3 rounded-md p-2">
-                  <p className="text-sm italic">{collections.notes}</p>
+                  <p className="text-sm italic">{fragrance.notes}</p>
                 </div>
               )}
 
@@ -203,25 +208,26 @@ export function UserCard({
       {/* tried */}
       {variant === "tried" && (
         <Card
-          key={collections.id}
+          key={fragrance.id}
           className="cursor-pointer transition-shadow hover:shadow-lg"
         >
           <CardContent className="p-4">
             <div className="relative mb-4 aspect-[3/4]">
               <Image
-                src={collections.url || "/placeholder.svg"}
-                alt={collections.name}
+                src={fragrance.url || "/placeholder.svg"}
+                alt={fragrance.name}
                 fill
                 className="rounded-md object-cover"
+                onClick={go}
               />
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold">{collections.name}</h3>
+              <h3 className="text-lg font-semibold">{fragrance.name}</h3>
 
-              {collections.notes && (
+              {fragrance.notes && (
                 <div className="bg-muted mt-3 rounded-md p-2">
-                  <p className="text-sm italic">{collections.notes}</p>
+                  <p className="text-sm italic">{fragrance.notes}</p>
                 </div>
               )}
 
@@ -282,27 +288,29 @@ export function UserCard({
       {/* owned */}
       {variant === "owned" && (
         <Card
-          key={collections.id}
+          key={fragrance.id}
           className="cursor-pointer transition-shadow hover:shadow-lg"
         >
           <div className="relative aspect-[3/4]">
             <Image
-              src={collections.url}
-              alt={collections.name}
+              src={fragrance.url}
+              alt={fragrance.name}
               fill
               className="rounded-md object-cover"
+              onClick={go}
+
             />
           </div>
           <CardContent className="p-4">
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold">{collections.name}</h3>
+              <h3 className="text-lg font-semibold">{fragrance.name}</h3>
 
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Added:</span>
                   <span>
                     Added:{" "}
-                    {new Date(collections.createdAt).toLocaleDateString()}{" "}
+                    {new Date(fragrance.createdAt).toLocaleDateString()}{" "}
                   </span>
                 </div>
               </div>
