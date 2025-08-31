@@ -15,6 +15,7 @@ import { collectionsItems } from "@/server/db/schema";
 import { UserCard } from "~/components/cologne-card/cologne-cards";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
+import { CollectionNav } from "~/components/collection-nav/collection-nav";
 
 export const dynamic = "force-dynamic";
 
@@ -40,15 +41,15 @@ export default async function TriedPage() {
     );
 
   return (
-    <div className="bg-background min-h-screen">
-      <div className="container mx-auto px-4 py-6">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="mb-2 text-3xl font-bold">Tried Fragrances</h1>
-          <p className="text-muted-foreground">
-            {tried.length} fragrances tested
-          </p>
-        </div>
+    <div className="min-h-screen bg-background flex">
+      <CollectionNav />
+      <div className="flex-1">
+        <div className="container mx-auto px-6 py-6">
+          {/* Header */}
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold mb-2">Tried Fragrances</h1>
+            <p className="text-muted-foreground">{tried.length} fragrances tested</p>
+          </div>
 
         {/* Filters and Search */}
         <Card className="mb-6">
@@ -115,6 +116,7 @@ export default async function TriedPage() {
           ))}
         </div>
       </div>
+    </div>
     </div>
   );
 }
