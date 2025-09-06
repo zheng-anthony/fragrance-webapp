@@ -9,7 +9,7 @@ export default function FragranceLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-background min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       <div className="bg-card border-b">
         <div className="mx-auto max-w-6xl px-4 py-4">
           <div className="flex items-center justify-between">
@@ -27,21 +27,6 @@ export default function FragranceLayout({
                 <span className="mx-2">/</span>
                 <span>Fragrance</span>
               </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" className="gap-2">
-                <Heart className="h-4 w-4" />
-                Like
-              </Button>
-              <Button variant="ghost" size="sm" className="gap-2">
-                <Bookmark className="h-4 w-4" />
-                Save
-              </Button>
-              <Button variant="ghost" size="sm" className="gap-2">
-                <Share2 className="h-4 w-4" />
-                Share
-              </Button>
             </div>
           </div>
         </div>
