@@ -105,8 +105,6 @@ export function CatalogCard({
   );
 }
 
-
-
 export function UserCard({
   variant,
   fragrance: fragrance,
@@ -118,11 +116,10 @@ export function UserCard({
     name: string;
     createdAt: Date;
     updatedAt: Date | null;
-    notes: string | null;
   };
 }) {
-const router = useRouter();
-const go = () => router.push(`/fragrances/${fragrance.id}`);
+  const router = useRouter();
+  const go = () => router.push(`/fragrances/${fragrance.id}`);
   return (
     <>
       {/* wishlist */}
@@ -155,9 +152,7 @@ const go = () => router.push(`/fragrances/${fragrance.id}`);
               </div>
 
               {fragrance && (
-                <div className="bg-muted mt-3 rounded-md p-2">
-                  <p className="text-sm italic">{fragrance.notes}</p>
-                </div>
+                <div className="bg-muted mt-3 rounded-md p-2"></div>
               )}
 
               <div className="mt-4 space-y-2">
@@ -225,12 +220,6 @@ const go = () => router.push(`/fragrances/${fragrance.id}`);
             <div className="space-y-2">
               <h3 className="text-lg font-semibold">{fragrance.name}</h3>
 
-              {fragrance.notes && (
-                <div className="bg-muted mt-3 rounded-md p-2">
-                  <p className="text-sm italic">{fragrance.notes}</p>
-                </div>
-              )}
-
               <div className="mt-4 space-y-2">
                 <div className="flex gap-2">
                   <Button size="sm" className="flex-1">
@@ -247,13 +236,6 @@ const go = () => router.push(`/fragrances/${fragrance.id}`);
                   </Button>
                 </div>
                 <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="flex-1 bg-transparent"
-                  >
-                    Edit Notes
-                  </Button>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button
@@ -298,7 +280,6 @@ const go = () => router.push(`/fragrances/${fragrance.id}`);
               fill
               className="rounded-md object-cover"
               onClick={go}
-
             />
           </div>
           <CardContent className="p-4">
@@ -315,13 +296,6 @@ const go = () => router.push(`/fragrances/${fragrance.id}`);
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="flex-1 bg-transparent"
-                >
-                  Edit Notes
-                </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button

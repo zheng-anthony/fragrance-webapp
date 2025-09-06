@@ -3,7 +3,8 @@ import { eq } from "drizzle-orm";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "~/components/ui/button";
+import { ArrowLeft, Link } from "lucide-react";
 
 export default async function ColognePage({
   params,
@@ -20,8 +21,12 @@ export default async function ColognePage({
   if (!fragrance) {
     return <p>fragrance not found</p>;
   }
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <div className="mx-auto max-w-6xl px-4">
+        <div className="flex items-center gap-4"></div>
+      </div>
       <div className="container mx-auto max-w-4xl px-4 py-8">
         <div className="mb-12 text-center">
           <h1 className="mb-4 font-sans text-4xl font-bold text-gray-700 md:text-5xl">
@@ -40,8 +45,8 @@ export default async function ColognePage({
               />
             </div>
           </div>
-          <div className="space-y-8">
-            <div className="mb-4 text-center">
+          <div className="space-y-4">
+            <div className="mb-2 text-center">
               <h2 className="mb-2 font-sans text-2xl font-bold text-gray-700">
                 Fragrance Notes
               </h2>
@@ -67,7 +72,7 @@ export default async function ColognePage({
                   </Badge>
                 </div>
                 <p className="mt-3 text-sm text-gray-500">
-                  The invigorating first impression
+                  Light, fleeting, and inviting.
                 </p>
               </CardContent>
             </Card>
@@ -89,7 +94,7 @@ export default async function ColognePage({
                   {fragrance.middleNotes}
                 </Badge>
                 <p className="mt-3 text-sm text-gray-500">
-                  The soul of the fragrance
+                  The soul that defines the scent.
                 </p>
               </CardContent>
             </Card>
@@ -111,7 +116,7 @@ export default async function ColognePage({
                   {fragrance.baseNotes}
                 </Badge>
                 <p className="mt-3 text-sm text-gray-500">
-                  The foundation of the fragrance
+                  Deep, grounding, and unforgettable.{" "}
                 </p>
               </CardContent>
             </Card>
