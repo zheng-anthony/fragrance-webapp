@@ -58,11 +58,11 @@ function SignOutButton() {
 }
 
 export function ProfileButton() {
-  const profile = useRouter();
+  const router = useRouter();
   const { data: session } = useSession();
 
   const handleProfile = () => {
-    profile.push("/profile");
+    router.push(`/profile/${session?.user.id}`);
   };
   if (session) {
     return (

@@ -1,50 +1,52 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Check, Heart, Eye } from "lucide-react"
-import { cn } from "@/lib/utils"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Check, Heart, Eye } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function CollectionNav() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const navItems = [
     {
-      href: "/owned",
+      href: "/Owned",
       label: "Owned",
       icon: Check,
       description: "Fragrances you own",
     },
     {
-      href: "/wishlist",
+      href: "/Wishlist",
       label: "Wishlist",
       icon: Heart,
       description: "Want to try",
     },
     {
-      href: "/tried",
+      href: "/Tried",
       label: "Tried",
       icon: Eye,
       description: "Tested fragrances",
     },
-  ]
+  ];
 
   return (
-    <div className="w-64 bg-card border-r border-border h-full">
+    <div className="bg-card border-border h-full w-64 border-r">
       <div className="p-6">
-        <h2 className="text-lg font-semibold mb-6">My Collections</h2>
+        <h2 className="mb-6 text-lg font-semibold">My Collections</h2>
         <nav className="space-y-2">
           {navItems.map((item) => {
-            const Icon = item.icon
-            const isActive = pathname === item.href
+            const Icon = item.icon;
+            const isActive = pathname === item.href;
 
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors",
-                  isActive ? "bg-primary text-primary-foreground" : "text-muted-foreground",
+                  "flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors",
+                  isActive
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground",
                 )}
               >
                 <Icon className="h-5 w-5" />
@@ -58,23 +60,24 @@ export function CollectionNav() {
                           ? "bg-primary-foreground/20 text-primary-foreground"
                           : "bg-muted text-muted-foreground",
                       )}
-                    >
-                    </span>
+                    ></span>
                   </div>
                   <p
                     className={cn(
-                      "text-xs mt-0.5",
-                      isActive ? "text-primary-foreground/70" : "text-muted-foreground/70",
+                      "mt-0.5 text-xs",
+                      isActive
+                        ? "text-primary-foreground/70"
+                        : "text-muted-foreground/70",
                     )}
                   >
                     {item.description}
                   </p>
                 </div>
               </Link>
-            )
+            );
           })}
         </nav>
       </div>
     </div>
-  )
+  );
 }

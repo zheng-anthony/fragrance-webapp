@@ -30,6 +30,8 @@ export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  location: text("location"),
 });
 export const collectionsItems = pgTable("collectionsItems", {
   id: serial("id").primaryKey(),
