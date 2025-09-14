@@ -36,6 +36,14 @@ export function CatalogCard({
   const router = useRouter();
   const go = () => router.push(`/fragrances/${fragrance.id}`);
 
+  const defaultAdded = (
+    fragranceId: number,
+    defaultCollections: DefaultCollections,
+  ) => {
+    void handleAddDefaultCollections(fragranceId, defaultCollections);
+    router.refresh();
+  };
+
   return (
     <Card
       key={fragrance.id}
@@ -62,10 +70,7 @@ export function CatalogCard({
             className="h-6 flex-1 bg-transparent px-1 text-xs hover:border-red-200 hover:bg-red-50 hover:text-red-600"
             title="Add to Wishlist"
             onClick={() => {
-              void handleAddDefaultCollections(
-                fragrance.id,
-                DefaultCollections.Wishlist,
-              );
+              void defaultAdded(fragrance.id, DefaultCollections.Wishlist);
             }}
           >
             <Heart className="h-3 w-3" />
@@ -76,10 +81,7 @@ export function CatalogCard({
             className="h-6 flex-1 bg-transparent px-1 text-xs hover:border-green-200 hover:bg-green-50 hover:text-green-600"
             title="Mark as Owned"
             onClick={() => {
-              void handleAddDefaultCollections(
-                fragrance.id,
-                DefaultCollections.Owned,
-              );
+              void defaultAdded(fragrance.id, DefaultCollections.Owned);
             }}
           >
             <Check className="h-3 w-3" />
@@ -90,10 +92,7 @@ export function CatalogCard({
             className="h-6 flex-1 bg-transparent px-1 text-xs hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
             title="Mark as Tried"
             onClick={() => {
-              void handleAddDefaultCollections(
-                fragrance.id,
-                DefaultCollections.Tried,
-              );
+              void defaultAdded(fragrance.id, DefaultCollections.Tried);
             }}
           >
             <Eye className="h-3 w-3" />
