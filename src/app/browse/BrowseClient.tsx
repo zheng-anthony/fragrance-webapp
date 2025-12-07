@@ -1,11 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { Search, ChevronDown, Heart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import type { FragrancePage } from "@/actions/get-fragrances";
+import {
+  getFragrancesPage,
+  type FragrancePage,
+} from "@/actions/get-fragrances";
 
 interface Fragrance {
   id: string;
@@ -29,18 +32,31 @@ function mapDbToUi(rows: FragrancePage["items"]): Fragrance[] {
 }
 
 export default function BrowseClient({ initialData }: Props) {
+  // all loaded fragrances (so far)
   const [allFragrances, setAllFragrances] = useState<Fragrance[]>(() =>
     mapDbToUi(initialData.items),
   );
 
+  // what is actually rendered
   const [fragrances, setFragrances] = useState<Fragrance[]>(() =>
     mapDbToUi(initialData.items),
   );
 
+  // paging
+  const [page, setPage] = useState(initialData.page);
+  const [totalPages] = useState(initialData.totalPages);
+
+  // for React 18 concurrent "loading" state
+  const [isPending, startTransition] = useTransition();
+
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
+
+  const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
+
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  const hasMore = page < totalPages;
 
   const noteOptions = [
     "Floral",
@@ -64,7 +80,6 @@ export default function BrowseClient({ initialData }: Props) {
   useEffect(() => {
     let filtered = allFragrances;
 
-    // Filter by search query
     if (searchQuery.trim() !== "") {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
@@ -75,17 +90,43 @@ export default function BrowseClient({ initialData }: Props) {
     }
 
     setFragrances(filtered);
-  }, [searchQuery, selectedNotes, allFragrances]);
+  }, [searchQuery, allFragrances]);
 
-  const toggleLike = (id: string) => {
-    const newLiked = new Set(likedIds);
-    if (newLiked.has(id)) {
-      newLiked.delete(id);
-    } else {
-      newLiked.add(id);
-    }
-    setLikedIds(newLiked);
+  const loadNextPage = () => {
+    if (!hasMore || isPending) return;
+
+    startTransition(async () => {
+      const next = await getFragrancesPage(page + 1);
+      const mapped = mapDbToUi(next.items);
+
+      setAllFragrances((prev) => [...prev, ...mapped]);
+      setPage(next.page);
+      // search filter will re-run because allFragrances changed
+    });
   };
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (!entry) return;
+        if (entry.isIntersecting) {
+          loadNextPage();
+        }
+      },
+      {
+        root: null,
+        rootMargin: "200px", // start loading a bit before actual bottom
+        threshold: 0.1,
+      },
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [hasMore, isPending, page]); // deps
 
   return (
     <main className="bg-background min-h-screen">
@@ -196,6 +237,18 @@ export default function BrowseClient({ initialData }: Props) {
             ))}
           </div>
         )}
+      </div>
+
+      {/* 👇 sentinel for infinite scroll */}
+      <div
+        ref={sentinelRef}
+        className="text-muted-foreground mt-4 flex h-10 items-center justify-center text-xs"
+      >
+        {isPending
+          ? "Loading more..."
+          : !hasMore
+            ? "You’ve reached the end."
+            : ""}
       </div>
     </main>
   );
