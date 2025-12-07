@@ -1,30 +1,21 @@
 "use server";
 
 import { sql } from "drizzle-orm";
-import { off } from "process";
 import { db } from "~/server/db";
 import { fragrances } from "~/server/db/schema";
+import type { fragranceType } from "~/server/db/schema";
 
-const pageSize = 24;
-
-export type Fragrance = {
-  id: number;
-  name: string;
-  url: string;
-  topNotes: string | null;
-  middleNotes: string | null;
-  baseNotes: string | null;
-};
+const pageSize = 48;
 
 export type FragrancePage = {
   page: number;
   totalPages: number;
   pageSize: number;
   total: number;
-  items: Fragrance[];
+  items: fragranceType[];
 };
 
-export async function getFragrancesPages(page: number): Promise<FragrancePage> {
+export async function getFragrancesPage(page: number): Promise<FragrancePage> {
   if (!page || page < 1) page = 1;
 
   const totalResult = await db

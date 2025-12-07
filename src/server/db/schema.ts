@@ -66,3 +66,5 @@ export type SelectUser = typeof users.$inferSelect;
 
 export type InsertList = typeof collectionsItems.$inferInsert;
 export type SelectList = typeof collectionsItems.$inferSelect;
+
+export type fragranceType = typeof fragrances.$inferSelect;
