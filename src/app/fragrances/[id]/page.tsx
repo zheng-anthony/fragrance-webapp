@@ -38,7 +38,7 @@ export default async function ColognePage({
           <div className="flex justify-center">
             <div className="relative aspect-[2/3] w-90 overflow-hidden rounded-2xl bg-black shadow-2xl">
               <Image
-                src={fragrance.imageURL || "/test_image.jpg"}
+                src={fragrance.imageURL ?? "/test_image.jpg"}
                 alt={fragrance.name}
                 fill
                 className="rounded-md object-cover"

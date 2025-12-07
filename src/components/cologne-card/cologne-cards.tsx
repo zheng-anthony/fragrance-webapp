@@ -52,7 +52,7 @@ export function CatalogCard({
     >
       <div className="relative aspect-[3/4]">
         <Image
-          src={fragrance.imageURL || "/test_image.jpg"}
+          src={fragrance.imageURL ?? "/test_image.jpg"}
           alt={fragrance.name}
           fill
           className="rounded-md object-cover"
@@ -132,7 +132,7 @@ export function UserCard({
           <CardContent className="p-4">
             <div className="relative mb-4 aspect-[3/4]">
               <Image
-                src={fragrance.imageURL || "/test_image.jpg"}
+                src={fragrance.imageURL ?? "/test_image.jpg"}
                 alt={fragrance.name}
                 fill
                 className="rounded-md object-cover"
@@ -210,7 +210,7 @@ export function UserCard({
           <CardContent className="p-4">
             <div className="relative mb-4 aspect-[3/4]">
               <Image
-                src={fragrance.url || "/placeholder.svg"}
+                src={fragrance.url ?? "/placeholder.svg"}
                 alt={fragrance.name}
                 fill
                 className="rounded-md object-cover"
@@ -276,7 +276,7 @@ export function UserCard({
         >
           <div className="relative aspect-[3/4]">
             <Image
-              src={fragrance.imageURL || "/test_image.jpg"}
+              src={fragrance.imageURL ?? "/test_image.jpg"}
               alt={fragrance.name}
               fill
               className="rounded-md object-cover"
