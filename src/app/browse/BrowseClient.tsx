@@ -239,7 +239,7 @@ export default function BrowseClient({ initialData }: Props) {
         )}
       </div>
 
-      {/* 👇 sentinel for infinite scroll */}
+      {/* sentinel for infinite scroll */}
       <div
         ref={sentinelRef}
         className="text-muted-foreground mt-4 flex h-10 items-center justify-center text-xs"
