@@ -16,7 +16,7 @@ export function Viewowned() {
         return;
       }
     }
-    owned.push("/owned");
+    owned.push("/Owned");
   };
   return (
     <Button
@@ -39,7 +39,7 @@ export function Viewtried() {
       await signIn();
       return;
     }
-    tried.push("/tried");
+    tried.push("/Tried");
   };
   return (
     <Button
@@ -63,7 +63,7 @@ export function Viewwishlist() {
       await signIn();
       return;
     }
-    wishlist.push("wishlist");
+    wishlist.push("Wishlist");
   };
 
   return (
@@ -95,4 +95,3 @@ export function UserCollections() {
     </Button>
   );
 }
-

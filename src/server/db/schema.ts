@@ -19,6 +19,7 @@ export const fragrances = pgTable("fragrances", {
   topNotes: text("topNotes"),
   middleNotes: text("middleNotes"),
   baseNotes: text("baseNotes"),
+  imageURL: text("imageURL"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),

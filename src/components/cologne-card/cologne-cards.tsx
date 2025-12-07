@@ -29,6 +29,7 @@ export function CatalogCard({
     id: number;
     url: string;
     name: string;
+    imageURL: string | null;
     createdAt: Date;
     updatedAt: Date | null;
   };
@@ -51,7 +52,7 @@ export function CatalogCard({
     >
       <div className="relative aspect-[3/4]">
         <Image
-          src={fragrance.url}
+          src={fragrance.imageURL || "/test_image.jpg"}
           alt={fragrance.name}
           fill
           className="rounded-md object-cover"
@@ -113,6 +114,7 @@ export function UserCard({
     id: number;
     url: string;
     name: string;
+    imageURL: string | null;
     createdAt: Date;
     updatedAt: Date | null;
   };
@@ -130,7 +132,7 @@ export function UserCard({
           <CardContent className="p-4">
             <div className="relative mb-4 aspect-[3/4]">
               <Image
-                src={fragrance.url || "/placeholder.svg"}
+                src={fragrance.imageURL || "/test_image.jpg"}
                 alt={fragrance.name}
                 fill
                 className="rounded-md object-cover"
@@ -274,7 +276,7 @@ export function UserCard({
         >
           <div className="relative aspect-[3/4]">
             <Image
-              src={fragrance.url}
+              src={fragrance.imageURL || "/test_image.jpg"}
               alt={fragrance.name}
               fill
               className="rounded-md object-cover"
