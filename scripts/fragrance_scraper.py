@@ -1,94 +1,111 @@
 import os
-import psycopg2
-import psycopg2.extras
 from dotenv import load_dotenv
+
 import kagglehub
-import csv
+import pandas as pd
 
-# load .env info
+from sqlalchemy import create_engine, MetaData, Table
+from sqlalchemy.dialects.postgresql import insert as pg_insert
+
+# db connections
 load_dotenv()
-
 DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
     raise RuntimeError("Database URL not set in .env")
 
+# fra_cleaned.csv is the proper .csv file
+DATASET_SLUG = "olgagmiufana1/fragrantica-com-fragrance-dataset"
+CSV_NAME = "fra_cleaned.csv"
 
-# get the dataset
-def get_dataset_path():
-    # fra_cleaned.csv is the proper .csv file
-    path = kagglehub.dataset_download("olgagmiufana1/fragrantica-com-fragrance-dataset")
-    return path
+# gets dataset path
+def get_dataset_path() -> str:
+    return kagglehub.dataset_download(DATASET_SLUG)
 
-# Helper function called to establish connection to DB
-def get_connection():
-    # returns a connection object (conn) that can be called to run queries
-    return psycopg2.connect(DATABASE_URL)
+# function to clean up entry names via pandas
+def clean(value):
+    if pd.isna(value):
+        return None
+    s = str(value).strip()
+    s = s.replace("-", " ")
+    s = " ".join(s.split())
+    s = s.title()
+    return s
 
-# Helper to auto-generate next id number
-def fix_id_sequence(conn):
-    """Sync the id sequence with the current max(id) in fragrances."""
-    with conn.cursor() as cur:
-        cur.execute(
-            """
-            SELECT setval(
-              pg_get_serial_sequence('fragrances', 'id'),
-              COALESCE((SELECT MAX(id) FROM fragrances), 1),
-              true
-            );
-            """
-        )
+# function to insert fragrance profiles
+def upsert_fragrance(engine, df, table_name="fragrances", chunk_size=2000):
+    meta = MetaData()
+    fragrances = Table(table_name, meta, autoload_with=engine)
 
-def insert_fragrance(conn, name, url, top_notes=None, middle_notes=None, base_notes=None):
-    # inserts a single fragrance into the DB
-    with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
-        cur.execute(
-            """
-            INSERT INTO fragrances(name, url, "topNotes", "middleNotes", "baseNotes")
-            VALUES (%s, %s, %s, %s, %s)
-            ON CONFLICT (url) DO UPDATE
-            SET name = EXCLUDED.name,
-                "topNotes" = EXCLUDED."topNotes",
-                "middleNotes" = EXCLUDED."middleNotes",
-                "baseNotes" = EXCLUDED."baseNotes";
-            """,
-            (name, url, top_notes, middle_notes, base_notes),
-        )
+    # converts dataframe into json format
+    rows = df.to_dict(orient="records")
+
+    # safety check
+    if not rows:
+        print("No rows to insert.")
+        return
+    
+    total = len(rows)
+
+    with engine.begin() as conn:
+        for batch_idx, start in enumerate(range(0, total, chunk_size), start=1):
+            batch = rows[start : start + chunk_size]
+
+            stmt = pg_insert(fragrances).values(batch)
+
+            stmt = stmt.on_conflict_do_update(
+                index_elements=["url"],
+                set_={
+                    "name": stmt.excluded["name"],
+                    "topNotes": stmt.excluded["topNotes"],
+                    "middleNotes": stmt.excluded["middleNotes"],
+                    "baseNotes": stmt.excluded["baseNotes"],
+                },
+            )
+
+            conn.execute(stmt)
+
+            # checks progress
+            if batch_idx % 1 == 0:
+                done = min(start + len(batch), total)
+                pct = (done / total) * 100
+                print(f"Upserted {done:,}/{total:,} ({pct:.1f}%)")
+
+    print(f"Done. Upsert complete for {total:,} rows.")
+
 
 def main():
-    # get connection to DB
-    conn = get_connection()
-    try:   
-        fix_id_sequence(conn)
+    # create engine
+    engine = create_engine(DATABASE_URL, future=True)
 
-        # get path to dataset csv
-        dataset_path = get_dataset_path()
+    # download dataset and path
+    dataset_path = get_dataset_path()
+    csv_path = os.path.join(dataset_path, CSV_NAME)
 
-        # build path to csv file
-        csv_path = os.path.join(dataset_path, "fra_cleaned.csv")
+    # read csv and turn into dataframe
+    df = pd.read_csv(csv_path, sep=";", encoding="cp1252", dtype=str)
 
-        # open csv and read one row
-        with open(csv_path, newline="", encoding="cp1252") as f:
-            reader = csv.DictReader(f, delimiter=";")
-            count = 0
-            for row in reader:
-                name = row["Perfume"]
-                url = row["url"]
-                top_notes = row.get("Top")
-                middle_notes = row.get("Middle")
-                base_notes = row.get("Base")
+    # rename csv cols to match schema
+    df = df.rename(
+        columns={
+            "Perfume": "name",
+            "Top": "topNotes",
+            "Middle": "middleNotes",
+            "Base": "baseNotes"
+        }
+    )
 
-                if not name or not url:
-                    continue
-                
-                insert_fragrance(conn, name, url, top_notes, middle_notes, base_notes)
-                count += 1
-                if count % 100 == 0:
-                    print("Added ", count, " fragrances")
-        print("Done. Inserted: ", count, " fragrances")
-        conn.commit()
+    ALLOWED_COLS = ["url", "name", "topNotes", "middleNotes", "baseNotes"]
+    df = df[[c for c in ALLOWED_COLS if c in df.columns]]
 
-    finally:
-        conn.close()
+    # uses clean function to clean up entries
+    df["name"] = df["name"].map(clean)
+    df["url"] = df["url"].str.strip()
+
+    for col in ["topNotes", "middleNotes", "baseNotes"]:
+        df[col] = df[col].map(clean)
+
+    upsert_fragrance(engine, df)
 
 if __name__ == "__main__":
     main()
+
