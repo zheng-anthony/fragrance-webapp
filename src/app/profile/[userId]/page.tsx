@@ -10,21 +10,25 @@ export default async function UserProfile({
 }: {
   params: Promise<{ userId: string }>;
 }) {
-  const userIdParam = await params;
-  const userId = Number(userIdParam);
+  const { userId } = await params;
+  const userIdNum = Number(userId);
 
   const user = await db.query.users.findFirst({
-    where: (u) => eq(u.id, userId),
+    where: eq(users.id, userIdNum),
   });
-  const recentActivity = [
-    {
-      action: "Added to collection",
-      item: "Lumière Éternelle",
-      time: "2 hours ago",
-    },
-    { action: "Reviewed", item: "Noir Mystique", time: "1 day ago" },
-    { action: "Wishlist", item: "Rose Garden", time: "3 days ago" },
-  ];
+
+  if (!user) {
+    return (
+      <div className="bg-background min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-xl font-bold mb-2">User not found</h1>
+          <p className="text-base font-medium text-muted-foreground">
+            The user you're looking for doesn't exist.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-background min-h-screen">
@@ -34,8 +38,8 @@ export default async function UserProfile({
           <CardContent className="p-8">
             <div className="flex flex-col items-center gap-6 md:flex-row md:items-start">
               <div className="flex-1 text-center md:text-left">
-                <h1 className="text-foreground mb-2 font-sans text-3xl font-bold"></h1>
-                <p className="text-muted-foreground mb-4 text-lg">
+                <h1 className="text-foreground mb-2 font-sans text-xl font-bold">{user.name}</h1>
+                <p className="text-muted-foreground mb-4 text-base font-medium">
                   Fragrance Enthusiast & Collector
                 </p>
                 <div className="mb-4 flex flex-wrap justify-center gap-2 md:justify-start">
@@ -55,28 +59,30 @@ export default async function UserProfile({
             {/* Personal Details */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-foreground font-sans text-xl">
+                <CardTitle className="text-foreground font-sans text-xl font-bold">
                   Personal Details
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <p className="text-muted-foreground text-sm">Email</p>
-                  <p className="font-medium">sophia.johnson@email.com</p>
+                  <p className="text-muted-foreground text-base font-medium">Email</p>
+                  <p className="text-base font-bold">{user.email}</p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground text-sm">Location</p>
-                  <p className="font-medium">New York, NY</p>
+                  <p className="text-muted-foreground text-base font-medium">Location</p>
+                  <p className="text-base font-bold">{user.location || "Not specified"}</p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground text-sm">Member Since</p>
-                  <p className="font-medium">January 2023</p>
+                  <p className="text-muted-foreground text-base font-medium">Member Since</p>
+                  <p className="text-base font-bold">
+                    {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : "Unknown"}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-muted-foreground text-base font-medium">
                     Favorite Season
                   </p>
-                  <p className="font-medium">Spring</p>
+                  <p className="text-base font-bold">Spring</p>
                 </div>
               </CardContent>
             </Card>
@@ -84,13 +90,13 @@ export default async function UserProfile({
             {/* Fragrance Preferences */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-foreground font-sans text-xl">
+                <CardTitle className="text-foreground font-sans text-xl font-bold">
                   Preferences
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <p className="text-muted-foreground mb-2 text-sm">
+                  <p className="text-muted-foreground mb-2 text-base font-medium">
                     Favorite Notes
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -109,13 +115,13 @@ export default async function UserProfile({
                   </div>
                 </div>
                 <div>
-                  <p className="text-muted-foreground mb-2 text-sm">
+                  <p className="text-muted-foreground mb-2 text-base font-medium">
                     Preferred Intensity
                   </p>
                   <Badge className="bg-accent/10 text-accent">Moderate</Badge>
                 </div>
                 <div>
-                  <p className="text-muted-foreground mb-2 text-sm">Occasion</p>
+                  <p className="text-muted-foreground mb-2 text-base font-medium">Occasion</p>
                   <div className="flex flex-wrap gap-2">
                     <Badge variant="outline">Evening</Badge>
                     <Badge variant="outline">Special Events</Badge>
@@ -130,7 +136,7 @@ export default async function UserProfile({
             {/* Fragrance Collection */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-foreground font-sans text-xl">
+                <CardTitle className="text-foreground font-sans text-xl font-bold">
                   My Collection
                 </CardTitle>
               </CardHeader>
@@ -147,28 +153,12 @@ export default async function UserProfile({
             {/* Recent Activity */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-foreground font-sans text-xl">
+                <CardTitle className="text-foreground font-sans text-xl font-bold">
                   Recent Activity
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {recentActivity.map((activity, index) => (
-                    <div
-                      key={index}
-                      className="border-muted/30 flex items-center justify-between border-b py-3 last:border-0"
-                    >
-                      <div>
-                        <p className="text-foreground font-medium">
-                          <span className="text-accent">{activity.action}</span>{" "}
-                          {activity.item}
-                        </p>
-                        <p className="text-muted-foreground text-sm">
-                          {activity.time}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
                 </div>
                 <Button
                   variant="outline"

@@ -47,8 +47,8 @@ export default async function OwnedPage() {
         <div className="container mx-auto px-6 py-6">
           {/* Header */}
           <div className="mb-6">
-            <h1 className="mb-2 text-3xl font-bold">Owned Fragrances</h1>
-            <p className="text-muted-foreground">
+            <h1 className="mb-2 text-xl font-bold">Owned Fragrances</h1>
+            <p className="text-muted-foreground text-base font-medium">
               {owned.length} fragrances tested
             </p>
           </div>

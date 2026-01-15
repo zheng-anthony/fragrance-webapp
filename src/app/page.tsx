@@ -23,7 +23,7 @@ export default async function Homepage() {
     <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
-          {session && <Sidebar session={session} />}
+          <Sidebar session={session} />
           {/* Main Content */}
           <div className="space-y-6 lg:col-span-3">
             {/* Most Popular Section */}
@@ -49,64 +49,79 @@ export default async function Homepage() {
   );
 }
 
-async function Sidebar({ session }: { session: Session }) {
-  const wishlist = await db
-    .select()
-    .from(collectionsItems)
-    .innerJoin(collections, eq(collectionsItems.collectionsId, collections.id))
-    .where(
-      and(
-        eq(collections.name, "Wishlist"),
-        eq(collections.userId, session.user.id),
-      ),
-    );
+async function Sidebar({ session }: { session: Session | null }) {
+  let owned: unknown[] = [];
+  let tried: unknown[] = [];
+  let wishlist: unknown[] = [];
 
-  const owned = await db
-    .select()
-    .from(collectionsItems)
-    .innerJoin(collections, eq(collectionsItems.collectionsId, collections.id))
-    .where(
-      and(
-        eq(collections.name, "Owned"),
-        eq(collections.userId, session.user.id),
-      ),
-    );
+  if (session) {
+    wishlist = await db
+      .select()
+      .from(collectionsItems)
+      .innerJoin(collections, eq(collectionsItems.collectionsId, collections.id))
+      .where(
+        and(
+          eq(collections.name, "Wishlist"),
+          eq(collections.userId, session.user.id),
+        ),
+      );
 
-  const tried = await db
-    .select()
-    .from(collectionsItems)
-    .innerJoin(collections, eq(collectionsItems.collectionsId, collections.id))
-    .where(
-      and(
-        eq(collections.name, "Tried"),
-        eq(collections.userId, session.user.id),
-      ),
-    );
+    owned = await db
+      .select()
+      .from(collectionsItems)
+      .innerJoin(collections, eq(collectionsItems.collectionsId, collections.id))
+      .where(
+        and(
+          eq(collections.name, "Owned"),
+          eq(collections.userId, session.user.id),
+        ),
+      );
+
+    tried = await db
+      .select()
+      .from(collectionsItems)
+      .innerJoin(collections, eq(collectionsItems.collectionsId, collections.id))
+      .where(
+        and(
+          eq(collections.name, "Tried"),
+          eq(collections.userId, session.user.id),
+        ),
+      );
+  }
+
   return (
     <div className="lg:col-span-1">
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle className="text-lg">My Stats</CardTitle>
+          <CardTitle className="text-xl font-bold">My Stats</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex justify-between">
-            <span className="text-muted-foreground text-sm">Owned</span>
-            <span className="font-semibold">{owned.length}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground text-sm">Tried</span>
-            <span className="font-semibold">{tried.length}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground text-sm">Wishlist</span>
-            <span className="font-semibold">{wishlist.length}</span>
-          </div>
+          {session ? (
+            <>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground text-base font-medium">Owned</span>
+                <span className="text-base font-bold">{owned.length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground text-base font-medium">Tried</span>
+                <span className="text-base font-bold">{tried.length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground text-base font-medium">Wishlist</span>
+                <span className="text-base font-bold">{wishlist.length}</span>
+              </div>
+            </>
+          ) : (
+            <p className="text-muted-foreground text-base font-medium text-center py-4">
+              Sign in to access
+            </p>
+          )}
         </CardContent>
       </Card>
       {/* quick action sidebar */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Quick Actions</CardTitle>
+          <CardTitle className="text-xl font-bold">Quick Actions</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           <Viewowned />

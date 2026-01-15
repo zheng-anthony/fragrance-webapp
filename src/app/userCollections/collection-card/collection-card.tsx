@@ -34,11 +34,11 @@ export function DefaultCard({
             <Icon className="text-primary h-5 w-5" />
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold">{name}</h3>
-            <p className="text-muted-foreground text-sm">{description}</p>
+            <h3 className="text-xl font-bold">{name}</h3>
+            <p className="text-muted-foreground text-base font-medium">{description}</p>
           </div>
         </div>
-        <div className="text-muted-foreground flex items-center justify-between text-sm">
+        <div className="text-muted-foreground flex items-center justify-between text-base font-medium">
           <span>{count} items</span>
         </div>
       </CardContent>

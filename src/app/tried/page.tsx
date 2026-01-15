@@ -47,8 +47,8 @@ export default async function TriedPage() {
         <div className="container mx-auto px-6 py-6">
           {/* Header */}
           <div className="mb-6">
-            <h1 className="text-3xl font-bold mb-2">Tried Fragrances</h1>
-            <p className="text-muted-foreground">{tried.length} fragrances tested</p>
+            <h1 className="text-xl font-bold mb-2">Tried Fragrances</h1>
+            <p className="text-muted-foreground text-base font-medium">{tried.length} fragrances tested</p>
           </div>
 
         {/* Filters and Search */}

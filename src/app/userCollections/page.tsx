@@ -25,12 +25,15 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
 import { DefaultCard } from "./collection-card/collection-card";
 import { custom } from "zod";
+import { redirect } from "next/navigation";
 
 export default async function CollectionsPage() {
   const session = await getServerSession(authOptions);
+
   if (!session?.user?.id) {
-    throw new Error("Not signed in");
+    redirect("/api/auth/signin");
   }
+  
   const wishlist = await db
     .select()
     .from(collectionsItems)
@@ -112,8 +115,8 @@ export default async function CollectionsPage() {
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="mb-2 text-3xl font-bold">My Collections</h1>
-            <p className="text-muted-foreground">
+            <h1 className="mb-2 text-xl font-bold">My Collections</h1>
+            <p className="text-muted-foreground text-base font-medium">
               Organize your fragrances into custom collections
             </p>
           </div>
@@ -160,7 +163,7 @@ export default async function CollectionsPage() {
           </CardContent>
         </Card>
         <div className="mb-8">
-          <h2 className="mb-4 text-xl font-semibold">Default Collections</h2>
+          <h2 className="mb-4 text-xl font-bold">Default Collections</h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {defaultcollections.map((collection) => (
               <DefaultCard
@@ -176,7 +179,7 @@ export default async function CollectionsPage() {
 
         {/* Custom Collections */}
         <div>
-          <h2 className="mb-4 text-xl font-semibold">Custom Collections</h2>
+          <h2 className="mb-4 text-xl font-bold">Custom Collections</h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {customCollections.map((collection) => (
               collection.collections ? (
@@ -188,7 +191,7 @@ export default async function CollectionsPage() {
                   <div className="mb-3 flex items-start justify-between">
                     <div className="flex-1">
                       <div className="mb-1 flex items-center gap-2">
-                        <h3 className="font-semibold">{collection.collections.name}</h3>
+                        <h3 className="text-xl font-bold">{collection.collections.name}</h3>
                         <Badge
                           variant={
                             collection.collections.privacy === "public"
@@ -199,7 +202,7 @@ export default async function CollectionsPage() {
                           {collection.collections.privacy}
                         </Badge>
                       </div>
-                      <p className="text-muted-foreground mb-2 text-sm">
+                      <p className="text-muted-foreground mb-2 text-base font-medium">
                         {collection.collections.description}
                       </p>
                     </div>
@@ -217,13 +220,13 @@ export default async function CollectionsPage() {
                         <DropdownMenuItem>Edit Collection</DropdownMenuItem>
                         <DropdownMenuItem>Share Collection</DropdownMenuItem>
                         <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">
+                        <DropdownMenuItem className="text-accent">
                           Delete Collection
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
-                  <div className="text-muted-foreground flex items-center justify-between text-sm">
+                  <div className="text-muted-foreground flex items-center justify-between text-base font-medium">
                     <span>{} items</span>
                     {collection.collections.privacy === "public" && ( 
                       <div className="flex items-center gap-1">
@@ -245,10 +248,10 @@ export default async function CollectionsPage() {
               <div className="bg-muted mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
                 <Plus className="text-muted-foreground h-6 w-6" />
               </div>
-              <h3 className="mb-2 text-lg font-semibold">
+              <h3 className="mb-2 text-xl font-bold">
                 No custom collections yet
               </h3>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-muted-foreground mb-4 text-base font-medium">
                 Create your first custom collection to organize your fragrances
               </p>
             </CardContent>

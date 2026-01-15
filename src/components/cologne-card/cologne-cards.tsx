@@ -62,13 +62,13 @@ export function CatalogCard({
 
       {/* Info content */}
       <CardContent className="p-3">
-        <h3 className="text-sm font-semibold">{fragrance.name}</h3>
-        <p className="text-muted-foreground text-xs">{fragrance.name}</p>
+        <h3 className="text-base font-bold">{fragrance.name}</h3>
+        <p className="text-muted-foreground text-base font-medium">{fragrance.name}</p>
         <div className="mt-1 flex gap-1">
           <Button
             size="sm"
             variant="outline"
-            className="h-6 flex-1 bg-transparent px-1 text-xs hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+            className="h-6 flex-1 bg-transparent px-1 text-base font-medium hover:border-accent hover:bg-accent/10 hover:text-accent"
             title="Add to Wishlist"
             onClick={() => {
               void defaultAdded(fragrance.id, DefaultCollections.Wishlist);
@@ -79,7 +79,7 @@ export function CatalogCard({
           <Button
             size="sm"
             variant="outline"
-            className="h-6 flex-1 bg-transparent px-1 text-xs hover:border-green-200 hover:bg-green-50 hover:text-green-600"
+            className="h-6 flex-1 bg-transparent px-1 text-base font-medium hover:border-accent hover:bg-accent/10 hover:text-accent"
             title="Mark as Owned"
             onClick={() => {
               void defaultAdded(fragrance.id, DefaultCollections.Owned);
@@ -90,7 +90,7 @@ export function CatalogCard({
           <Button
             size="sm"
             variant="outline"
-            className="h-6 flex-1 bg-transparent px-1 text-xs hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+            className="h-6 flex-1 bg-transparent px-1 text-base font-medium hover:border-accent hover:bg-accent/10 hover:text-accent"
             title="Mark as Tried"
             onClick={() => {
               void defaultAdded(fragrance.id, DefaultCollections.Tried);
@@ -141,9 +141,9 @@ export function UserCard({
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold">{fragrance.name}</h3>
+              <h3 className="text-xl font-bold">{fragrance.name}</h3>
 
-              <div className="space-y-1 text-sm">
+              <div className="space-y-1 text-base font-medium">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Added:</span>
                   <span>
@@ -181,16 +181,16 @@ export function UserCard({
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem className="text-green-600">
+                      <DropdownMenuItem className="text-accent">
                         Mark as Owned
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-blue-600">
+                      <DropdownMenuItem className="text-accent">
                         Mark as Tried
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-orange-600">
+                      <DropdownMenuItem className="text-foreground">
                         Change Priority
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-red-600">
+                      <DropdownMenuItem className="text-accent">
                         Remove from Wishlist
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -219,7 +219,7 @@ export function UserCard({
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold">{fragrance.name}</h3>
+              <h3 className="text-xl font-bold">{fragrance.name}</h3>
 
               <div className="mt-4 space-y-2">
                 <div className="flex gap-2">
@@ -248,16 +248,16 @@ export function UserCard({
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem className="text-green-600">
+                      <DropdownMenuItem className="text-accent">
                         Mark as Owned
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-blue-600">
+                      <DropdownMenuItem className="text-accent">
                         Add to Wishlist
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-orange-600">
+                      <DropdownMenuItem className="text-foreground">
                         Change Verdict
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-red-600">
+                      <DropdownMenuItem className="text-accent">
                         Remove from Tried
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -285,9 +285,9 @@ export function UserCard({
           </div>
           <CardContent className="p-4">
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold">{fragrance.name}</h3>
+              <h3 className="text-xl font-bold">{fragrance.name}</h3>
 
-              <div className="space-y-1 text-sm">
+              <div className="space-y-1 text-base font-medium">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Added:</span>
                   <span>
@@ -309,18 +309,18 @@ export function UserCard({
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
                     align="end"
-                    className="bg-black text-white"
+                    className="bg-primary text-primary-foreground"
                   >
-                    <DropdownMenuItem className="text-green-400">
+                    <DropdownMenuItem className="text-accent">
                       Mark as Owned
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-blue-400">
+                    <DropdownMenuItem className="text-accent">
                       Add to Wishlist
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-orange-400">
+                    <DropdownMenuItem className="text-primary-foreground">
                       Change Verdict
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-600">
+                    <DropdownMenuItem className="text-accent">
                       Remove from Owned
                     </DropdownMenuItem>
                   </DropdownMenuContent>

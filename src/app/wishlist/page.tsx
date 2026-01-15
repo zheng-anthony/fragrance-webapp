@@ -45,8 +45,8 @@ export default async function WishlistPage() {
         <div className="container mx-auto px-6 py-6">
           {/* Header */}
           <div className="mb-6">
-            <h1 className="text-3xl font-bold mb-2">Wishlist</h1>
-            <p className="text-muted-foreground">{wishlist.length} fragrances tested</p>
+            <h1 className="text-xl font-bold mb-2">Wishlist</h1>
+            <p className="text-muted-foreground text-base font-medium">{wishlist.length} fragrances tested</p>
           </div>
 
         {/* Filters and Search */}

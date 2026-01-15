@@ -35,7 +35,7 @@ export default function RootLayout({
             <div className="container mx-auto px-4 py-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-6">
-                  <h1 className="text-primary text-2xl font-bold">ScentList</h1>
+                  <h1 className="text-primary text-xl font-bold">ScentList</h1>
                   <nav className="hidden items-center gap-6 md:flex">
                     <HomeButton />
                     <BrowseButton />
@@ -43,14 +43,6 @@ export default function RootLayout({
                   </nav>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="relative hidden sm:block">
-                    <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
-                    <Input
-                      placeholder="Search fragrances..."
-                      className="w-64 pl-10"
-                    />
-                  </div>
-                  {}
                   <ProfileButton />
                 </div>
               </div>

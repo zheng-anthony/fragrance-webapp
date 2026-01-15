@@ -35,7 +35,7 @@ export function BrowseCollections() {
   const router = useRouter();
 
   const handleCollections = () => {
-    router.push("/browseCollections");
+    router.push("/userCollections");
   };
   return (
     <Button variant="ghost" className="text-sm" onClick={handleCollections}>

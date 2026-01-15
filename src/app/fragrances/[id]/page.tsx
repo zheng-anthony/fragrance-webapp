@@ -23,20 +23,20 @@ export default async function ColognePage({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex items-center gap-4"></div>
       </div>
       <div className="container mx-auto max-w-4xl px-4 py-8">
         <div className="mb-12 text-center">
-          <h1 className="mb-4 font-sans text-4xl font-bold text-gray-700 md:text-5xl">
+          <h1 className="mb-4 font-sans text-xl font-bold text-foreground">
             {fragrance.name}
           </h1>
         </div>
         {/* Main Content Grid */}
         <div className="grid items-start gap-12 md:grid-cols-2">
           <div className="flex justify-center">
-            <div className="relative aspect-[2/3] w-90 overflow-hidden rounded-2xl bg-black shadow-2xl">
+            <div className="relative aspect-[2/3] w-90 overflow-hidden rounded-2xl bg-primary shadow-2xl">
               <Image
                 src={fragrance.imageURL ?? "/test_image.jpg"}
                 alt={fragrance.name}
@@ -47,20 +47,20 @@ export default async function ColognePage({
           </div>
           <div className="space-y-4">
             <div className="mb-2 text-center">
-              <h2 className="mb-2 font-sans text-2xl font-bold text-gray-700">
+              <h2 className="mb-2 font-sans text-xl font-bold text-foreground">
                 Fragrance Notes
               </h2>
             </div>
             {/* Top Notes */}
-            <Card className="bg-gray-100 shadow-2xl">
+            <Card className="bg-muted shadow-2xl">
               <CardContent className="p-6">
                 <div className="mb-4 flex items-center justify-between">
-                  <h3 className="font-sans text-lg font-semibold text-green-800">
+                  <h3 className="font-sans text-xl font-bold text-foreground">
                     Top Notes
                   </h3>
                   <Badge
                     variant="secondary"
-                    className="bg-green-800 text-gray-200"
+                    className="bg-accent text-accent-foreground"
                   >
                     Opening
                   </Badge>
@@ -71,21 +71,21 @@ export default async function ColognePage({
                     {fragrance.topNotes}
                   </Badge>
                 </div>
-                <p className="mt-3 text-sm text-gray-500">
+                <p className="mt-3 text-base font-medium text-muted-foreground">
                   Light, fleeting, and inviting.
                 </p>
               </CardContent>
             </Card>
             {/* Middle Notes */}
-            <Card className="ml-4 bg-gray-100 shadow-2xl">
+            <Card className="ml-4 bg-muted shadow-2xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-sans text-lg font-semibold text-green-800">
+                  <h3 className="font-sans text-xl font-bold text-foreground">
                     Middle Notes
                   </h3>
                   <Badge
                     variant="secondary"
-                    className="bg-green-800 text-gray-200"
+                    className="bg-accent text-accent-foreground"
                   >
                     Heart
                   </Badge>
@@ -93,21 +93,21 @@ export default async function ColognePage({
                 <Badge variant="outline" className="border-primary/30">
                   {fragrance.middleNotes}
                 </Badge>
-                <p className="mt-3 text-sm text-gray-500">
+                <p className="mt-3 text-base font-medium text-muted-foreground">
                   The soul that defines the scent.
                 </p>
               </CardContent>
             </Card>
             {/* Base Notes */}
-            <Card className="ml-8 bg-gray-100 shadow-2xl">
+            <Card className="ml-8 bg-muted shadow-2xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-sans text-lg font-semibold text-green-800">
+                  <h3 className="font-sans text-xl font-bold text-foreground">
                     Base Notes
                   </h3>
                   <Badge
                     variant="secondary"
-                    className="bg-green-800 text-gray-200"
+                    className="bg-accent text-accent-foreground"
                   >
                     Heart
                   </Badge>
@@ -115,7 +115,7 @@ export default async function ColognePage({
                 <Badge variant="outline" className="border-primary/30">
                   {fragrance.baseNotes}
                 </Badge>
-                <p className="mt-3 text-sm text-gray-500">
+                <p className="mt-3 text-base font-medium text-muted-foreground">
                   Deep, grounding, and unforgettable.{" "}
                 </p>
               </CardContent>

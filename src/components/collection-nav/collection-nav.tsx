@@ -32,7 +32,7 @@ export function CollectionNav() {
   return (
     <div className="bg-card border-border h-full w-64 border-r">
       <div className="p-6">
-        <h2 className="mb-6 text-lg font-semibold">My Collections</h2>
+        <h2 className="mb-6 text-xl font-bold">My Collections</h2>
         <nav className="space-y-2">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -43,7 +43,7 @@ export function CollectionNav() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors",
+                  "flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors",
                   isActive
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground",
@@ -55,7 +55,7 @@ export function CollectionNav() {
                     <span>{item.label}</span>
                     <span
                       className={cn(
-                        "ml-2 rounded-full px-2 py-0.5 text-xs font-medium",
+                        "ml-2 rounded-full px-2 py-0.5 text-base font-medium",
                         isActive
                           ? "bg-primary-foreground/20 text-primary-foreground"
                           : "bg-muted text-muted-foreground",
@@ -64,7 +64,7 @@ export function CollectionNav() {
                   </div>
                   <p
                     className={cn(
-                      "mt-0.5 text-xs",
+                      "mt-0.5 text-base font-medium",
                       isActive
                         ? "text-primary-foreground/70"
                         : "text-muted-foreground/70",

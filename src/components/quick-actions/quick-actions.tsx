@@ -80,10 +80,16 @@ export function Viewwishlist() {
 
 export function UserCollections() {
   const router = useRouter();
+  const { data: session } = useSession();
 
-  const handleCollections = () => {
+  const handleCollections = async () => {
+    if (!session?.user.id) {
+      await signIn();
+      return;
+    }
     router.push("/userCollections");
   };
+
   return (
     <Button
       className="w-full justify-start bg-transparent"
